@@ -1,0 +1,33 @@
+#!/bin/zsh
+
+export HISTFILE=~/.zsh/history
+export HISTSIZE=3000
+export SAVEHIST=3000
+export EDITOR=vim
+export BROWSER=elinks
+export NNTPSERVER='news.wsisiz.edu.pl'
+
+
+
+autoload -U compinit; compinit
+
+
+setopt hist_ignore_all_dups
+setopt hist_ignore_space
+
+
+
+zstyle ':completion:*:descriptions' format '%U%B%d%b%u'
+zstyle ':completion:*:warnings' format '%BSorry, no matches for: %d%b'
+
+# allow approximate
+zstyle ':completion:*' completer _complete _match _approximate
+zstyle ':completion:*:match:*' original only
+zstyle ':completion:*:approximate:*' max-errors 1 numeric
+
+# tab completion for PID :D
+zstyle ':completion:*:*:kill:*' menu yes select
+zstyle ':completion:*:kill:*' force-list always
+
+# cd not select parent dir. 
+zstyle ':completion:*:cd:*' ignore-parents parent pwd

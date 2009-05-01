@@ -1,0 +1,6 @@
+600     sh date.sh
+30      sh fan.sh
+300     sh mail.sh
+1200    sh rss.sh
+60      sh time.sh
+60      sh batt.sh

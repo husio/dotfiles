@@ -1,0 +1,6 @@
+#!/bin/zsh
+
+
+
+PROMPT="%n${WHITE}@%M${BLUE}# ${NO_COLOR}"
+RPROMPT="${GRAY}(%~)  [%T]${NO_COLOR}"

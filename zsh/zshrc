@@ -1,0 +1,17 @@
+#!/bin/zsh
+
+[[ -f ~/.profile ]] && . ~/.profile
+
+# use hard limits, except for a smaller stack and no core dumps
+unlimit
+limit stack 8192
+limit core 0
+limit -s
+
+
+. ~/.zsh/colors
+. ~/.zsh/opts
+. ~/.zsh/function
+. ~/.zsh/alias
+. ~/.zsh/prompt
+. ~/.zsh/key_bindings

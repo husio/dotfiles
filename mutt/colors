@@ -1,0 +1,23 @@
+color header            brightblue      default     ^(From)
+color header            brightblue      default     ^(Subject)
+color header            blue            default     ^(To:|Date:)
+color status            blue            default
+color sidebar_new       brightblack     red
+color hdrdefault        brightred       default
+color indicator         brightblue      default
+color body              brightyellow    default     "(ftp|http|ssh)://[^ ]+" 
+color body              brightyellow    default     [-a-z_0-9.]+@[-a-z_0-9.]+ 
+color body              brightgreen     default     "[;:]-[)/(|]"
+color body              brightgreen     default     "[;:][)/(|]"
+color body              brightgreen     default     "[[:alpha:]]\+://[^ ]*"
+color signature         brightred       default
+color attachment        brightblack     red
+
+color normal            white           default
+color quoted            brightblack     default
+
+color index             brightyellow    default ~N
+color index             yellow          default ~O
+color index             magenta         default ~F
+color index             blue            default ~T
+color index             red             default ~D
