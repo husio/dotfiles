@@ -232,10 +232,7 @@ globalkeys =
     key({}, "XF86KbdBrightnessDown",    function() awful.util.spawn("sudo macbook-backlight -10") end),
     key({}, "XF86KbdBrightnessUp",      function() awful.util.spawn("sudo macbook-backlight +10") end),
 
-    key({}, "F7",      function() awful.util.spawn("slock") end),
-
-    -- TODO - xlock instead
-    key({}, "XF86Display", function () awful.util.spawn("xlock -mode blank") end),
+    key({}, "XF86Display", function () awful.util.spawn("slock") end),
 
     
     key({ modkey, "Shift" }, "Delete", function () awful.util.spawn("sudo poweroff") end),
