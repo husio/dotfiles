@@ -9,8 +9,24 @@ beautiful.init(theme_path)
 terminal = "xterm"
 editor = os.getenv("EDITOR") or "vim"
 editor_cmd = terminal .. " -e " .. editor
-
 modkey = "Mod4"
+
+spawn_cmd = {
+    ["terminal"] = function(cmd)
+                        if cmd then
+                            cmd = "xterm -e " + cmd
+                        else
+                            cmd = "xterm"
+                        end
+                        awful.util.spawn(cmd)
+                    end,
+    ["ncmpc"] = function() awful.util.spawn(terminal .. " -fs 8 -class \"ncmpc\" -geometry 55x65+944+16 -bw 0 -e ncmpc") end,
+    ["editor"] = function(file) file = file or ''; awful.util.spawn(terminal .. "-e vim "..file) end,
+    ["rss"] = function() awful.util.spawn(terminal .. " -e canto; cd /home/piotrek/.config/awesome/actions/ && ./rss.sh") end,
+    ["mail"] = function() awful.util.spawn(terminal .. " -e mutt -f ~/.Mail/phusiatynski && cd /home/piotrek/.config/awesome/actions/ && ./mail.sh") end,
+    ["mpc"] = function(cmd) awful.util.spawn("mpc "..cmd); mpd_info_update();  end,
+    ["vol"] = function(cmd) volume_info_update("amixer -c 0 set Master "..cmd) end
+}
 
 layouts =
 {
@@ -41,7 +57,7 @@ apptags =
 
 use_titlebar = false
 
---{{{ Naughty 
+--{{{ Naughty
 --[[
 naughty.config.timeout          = 5
 naughty.config.screen           = 1
@@ -109,17 +125,25 @@ end
 
 
 mymailbox = widget({ type = "textbox", align = "right" })
+mymailbox:buttons({ button({}, 1, function() spawn_cmd["mail"]() end) })
 myfanbox = widget({ type = "textbox", align = "right" })
 myrssbox = widget({ type = "textbox", align = "right" })
+myrssbox:buttons({ button({}, 1, function() spawn_cmd["rss"]() end) })
 mybattbox = widget({ type = "textbox", align = "right" })
 mytimebox = widget({ type = "textbox", align = "right" })
 mydatebox = widget({ type = "textbox", align = "right" })
 mympdbox = widget({ type = "textbox", align = "right" })
+mympdbox:buttons({
+    button({}, 4, function() spawn_cmd["mpc"]("prev") end),
+    button({}, 5, function() spawn_cmd["mpc"]("next") end),
+    button({}, 3, function() spawn_cmd["mpc"]("toggle") end),
+    button({}, 1, function() spawn_cmd["ncmpc"]() end)
+})
 myvolbox = widget({ type = "textbox", align = "right" })
 myvolbox:buttons({
-    button({ }, 4, function () volume_info_update("amixer -c 0 set Master 1dB+") end),
-    button({ }, 5, function () volume_info_update("amixer -c 0 set Master 1dB-") end),
-    button({ }, 1, function () volume_info_update("amixer -c 0 set Master toggle") end)
+    button({ }, 4, function() spawn_cmd["vol"]("1dB+") end),
+    button({ }, 5, function() spawn_cmd["vol"]("1dB-") end),
+    button({ }, 1, function() spawn_cmd["vol"]("toggle") end)
 })
 
 
@@ -142,7 +166,7 @@ for s = 1, screen.count() do
     mypromptbox[s] = widget({ type = "textbox", align = "left" })
     mytaglist[s] = awful.widget.taglist.new(s, awful.widget.taglist.label.all, mytaglist.buttons)
     mywibox[s] = wibox({ position = "top", fg = beautiful.fg_normal, bg = beautiful.bg_normal })
-    mywibox[s].widgets = { 
+    mywibox[s].widgets = {
                            mylauncher,
                            mytaglist[s],
                            mypromptbox[s],
@@ -211,26 +235,26 @@ globalkeys =
     key({ modkey,           }, "space", function () awful.layout.inc(layouts,  1) end),
     key({ modkey, "Shift"   }, "space", function () awful.layout.inc(layouts, -1) end),
 
-    key({ modkey            }, ",",     function () awful.util.spawn("mpc prev"); mpd_info_update();  end),
-    key({ modkey            }, ".",     function () awful.util.spawn("mpc next");  mpd_info_update(); end),
-    key({ modkey            }, "/",     function () awful.util.spawn("mpc toggle"); mpd_info_update(); end),
-    key({ modkey            }, "n",     function () awful.util.spawn(terminal .. " -fs 8 -class \"ncmpc\" -geometry 55x65+944+16 -bw 0 -e ncmpc") end),
+    key({ modkey            }, ",",     function () spawn_cmd["mpc"]("prev")  end),
+    key({ modkey            }, ".",     function () spawn_cmd["mpc"]("next") end),
+    key({ modkey            }, "/",     function () spawn_cmd["mpc"]("toggle") end),
+    key({ modkey            }, "n",     function () spawn_cmd["ncmpc"]() end),
 
-    key({ modkey            }, "a",     function () awful.util.spawn(terminal .. " -e alsamixer") end),
+    key({ modkey            }, "a",     function () spawn_cmd["terminal"]("alsamixer") end),
 
     key({ modkey, "Shift"   }, "c",     function () awful.util.spawn("python /home/piotrek/.scripts/color-chooser.py") end),
-    key({ modkey            }, "m",     function () awful.util.spawn(terminal .. " -e mutt -f ~/.Mail/phusiatynski && cd /home/piotrek/.config/awesome/actions/ && ./mail.sh") end),
-    key({ modkey            }, "s",     function () awful.util.spawn(terminal .. " -e slrn") end),
-    key({ modkey            }, "c",     function () awful.util.spawn(terminal .. " -e mc") end),
-    key({ modkey            }, "r",     function () awful.util.spawn(terminal .. " -e canto; cd /home/piotrek/.config/awesome/actions/ && ./rss.sh") end),
+    key({ modkey            }, "m",     function () spawn_cmd["mail"]() end),
+    key({ modkey            }, "s",     function () spawn_cmd["terminal"](" slrn") end),
+    key({ modkey            }, "c",     function () spawn_cmd["temrinal"]("mc") end),
+    key({ modkey            }, "r",     function () spawn_cmd["rss"]() end),
 
-    key({ "Control", "Mod1" }, "Return", function () awful.util.spawn(terminal .. " -e ssh husiatyn@wit.edu.pl") end),
-    key({ modkey,   "Shift" }, "Return", function () awful.util.spawn(terminal .. " -e ssh piotrek@192.168.0.1") end),
+    key({ "Control", "Mod1" }, "Return", function () spawn_cmd["temrinal"]("ssh husiatyn@wit.edu.pl") end),
+    key({ modkey,   "Shift" }, "Return", function () spawn_cmd["temrinal"]("ssh piotrek@192.168.0.1") end),
 
 
-    key({}, "XF86AudioRaiseVolume",     function() volume_info_update("amixer -c 0 set Master 5dB+") end),
-    key({}, "XF86AudioLowerVolume",     function() volume_info_update("amixer -c 0 set Master 5dB-") end),
-    key({}, "XF86AudioMute",            function() volume_info_update("amixer -c 0 set Master toggle") end),
+    key({}, "XF86AudioRaiseVolume",     function() spawn_cmd["vol"]("5dB+") end),
+    key({}, "XF86AudioLowerVolume",     function() spawn_cmd["vol"]("5dB-") end),
+    key({}, "XF86AudioMute",            function() spawn_cmd["vol"]("toggle") end),
 
     key({}, "XF86Eject",                function() awful.util.spawn("eject") end),
 
@@ -239,7 +263,7 @@ globalkeys =
 
     key({}, "XF86Display", function () awful.util.spawn("slock") end),
 
-    
+
     key({ modkey, "Shift" }, "Delete", function () awful.util.spawn("sudo poweroff") end),
 
     -- Prompt
@@ -429,7 +453,7 @@ end)
 
 -- Hook called every minute
 
-function mpd_info_update() 
+function mpd_info_update()
     mympdbox.text = "<span color=\"".. beautiful.fg_normal .."\">mpd: </span><span color=\"".. beautiful.fg_light .."\">" .. awful.util.escape(get_mpd_info()) .. "</span>"
 end
 
@@ -437,7 +461,7 @@ function volume_info_update(arg)
     myvolbox.text = "<span color=\"".. beautiful.fg_normal .."\">vol: </span><span color=\"".. beautiful.fg_light .."\">" .. get_volume_info(arg) .. "</span>"
 end
 
-awful.hooks.timer.register(30, 
+awful.hooks.timer.register(30,
     function()
         mpd_info_update()
         volume_info_update()
