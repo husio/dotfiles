@@ -13,11 +13,7 @@ modkey = "Mod4"
 
 spawn_cmd = {
     ["terminal"] = function(cmd)
-                        if cmd then
-                            cmd = "xterm -e " + cmd
-                        else
-                            cmd = "xterm"
-                        end
+                        if cmd then cmd = "xterm -e "..cmd else cmd = "xterm" end
                         awful.util.spawn(cmd)
                     end,
     ["ncmpc"] = function() awful.util.spawn(terminal .. " -fs 8 -class \"ncmpc\" -geometry 55x65+944+16 -bw 0 -e ncmpc") end,
@@ -244,12 +240,12 @@ globalkeys =
 
     key({ modkey, "Shift"   }, "c",     function () awful.util.spawn("python /home/piotrek/.scripts/color-chooser.py") end),
     key({ modkey            }, "m",     function () spawn_cmd["mail"]() end),
-    key({ modkey            }, "s",     function () spawn_cmd["terminal"](" slrn") end),
+    key({ modkey            }, "s",     function () spawn_cmd["terminal"]("slrn") end),
     key({ modkey            }, "c",     function () spawn_cmd["temrinal"]("mc") end),
     key({ modkey            }, "r",     function () spawn_cmd["rss"]() end),
 
-    key({ "Control", "Mod1" }, "Return", function () spawn_cmd["temrinal"]("ssh husiatyn@wit.edu.pl") end),
-    key({ modkey,   "Shift" }, "Return", function () spawn_cmd["temrinal"]("ssh piotrek@192.168.0.1") end),
+    key({ "Control", "Mod1" }, "Return", function () spawn_cmd["terminal"]("ssh husiatyn@wit.edu.pl") end),
+    key({ modkey,   "Shift" }, "Return", function () spawn_cmd["terminal"]("ssh piotrek@192.168.0.1") end),
 
 
     key({}, "XF86AudioRaiseVolume",     function() spawn_cmd["vol"]("5dB+") end),
