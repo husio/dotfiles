@@ -1,6 +1,6 @@
 require("awful")
 require("beautiful")
-require("naughty")
+--require("naughty")
 require("revelation")
 
 theme_path = "/home/piotrek/.config/awesome/themes/dark/theme"
@@ -21,7 +21,6 @@ layouts =
     awful.layout.suit.floating
 }
 
---    xterm -name mocp -e mocp
 floatapps =
 {
     ["MPlayer"] = true,
@@ -43,6 +42,7 @@ apptags =
 use_titlebar = false
 
 --{{{ Naughty 
+--[[
 naughty.config.timeout          = 5
 naughty.config.screen           = 1
 naughty.config.position         = "top_right"
@@ -54,13 +54,12 @@ naughty.config.ontop            = true
 naughty.config.font             = "Verdana 12"
 naughty.config.icon             = nil
 naughty.config.icon_size        = 42
---[[
-naughty.config.fg               = '#738DBF'
-naughty.config.bg               = '#313131'
-naughty.config.border_color     = '#8E8E8E'
-]]--
+--naughty.config.fg               = '#738DBF'
+--naughty.config.bg               = '#313131'
+--naughty.config.border_color     = '#8E8E8E'
 naughty.config.border_width     = 1
 naughty.config.hover_timeout    = nil
+]]--
 --}}}
 
 -- {{{ Help functions
@@ -117,6 +116,12 @@ mytimebox = widget({ type = "textbox", align = "right" })
 mydatebox = widget({ type = "textbox", align = "right" })
 mympdbox = widget({ type = "textbox", align = "right" })
 myvolbox = widget({ type = "textbox", align = "right" })
+myvolbox:buttons({
+    button({ }, 4, function () volume_info_update("amixer -c 0 set Master 1dB+") end),
+    button({ }, 5, function () volume_info_update("amixer -c 0 set Master 1dB-") end),
+    button({ }, 1, function () volume_info_update("amixer -c 0 set Master toggle") end)
+})
+
 
 myseparator = widget({ type = "textbox", align = "right" })
 myseparator.text = "<span color=\"".. beautiful.fg_dark .."\">   ❂   </span>"
