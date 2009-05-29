@@ -12,16 +12,16 @@ editor_cmd = terminal .. " -e " .. editor
 modkey = "Mod4"
 
 spawn_cmd = {
-    ["terminal"] = function(cmd)
-                        if cmd then cmd = "xterm -e "..cmd else cmd = "xterm" end
-                        awful.util.spawn(cmd)
-                    end,
-    ["ncmpc"] = function() awful.util.spawn(terminal .. " -fs 8 -class \"ncmpc\" -geometry 55x65+944+16 -bw 0 -e ncmpc") end,
+    ["terminal"] = function(cmd) awful.util.spawn(terminal.." -e "..cmd) end,
+    ["ncmpc"] = function() awful.util.spawn(terminal .. " -fs 8 -class \"ncmpc\" -geometry 47x56+944+16 -bw 0 -e ncmpc") end,
     ["editor"] = function(file) file = file or ''; awful.util.spawn(terminal .. "-e vim "..file) end,
     ["rss"] = function() awful.util.spawn(terminal .. " -e canto; cd /home/piotrek/.config/awesome/actions/ && ./rss.sh") end,
     ["mail"] = function() awful.util.spawn(terminal .. " -e mutt -f ~/.Mail/phusiatynski && cd /home/piotrek/.config/awesome/actions/ && ./mail.sh") end,
     ["mpc"] = function(cmd) awful.util.spawn("mpc "..cmd); mpd_info_update();  end,
-    ["vol"] = function(cmd) volume_info_update("amixer -c 0 set Master "..cmd) end
+    ["vol"] = function(cmd) volume_info_update("amixer -c 0 set Master "..cmd) end,
+    ["notify_date"] = function() -- awful.util.spawn([[ notify-send "`cal`" ]])
+                                end,
+    ["sysload"] = function() awful.util.spawn(terminal.." -e htop") end,
 }
 
 layouts =
@@ -121,19 +121,20 @@ end
 
 
 mymailbox = widget({ type = "textbox", align = "right" })
-mymailbox:buttons({ button({}, 1, function() spawn_cmd["mail"]() end) })
+mymailbox:buttons({ button({}, 1, spawn_cmd["mail"]) })
 myfanbox = widget({ type = "textbox", align = "right" })
 myrssbox = widget({ type = "textbox", align = "right" })
-myrssbox:buttons({ button({}, 1, function() spawn_cmd["rss"]() end) })
+myrssbox:buttons({ button({}, 1, spawn_cmd["rss"]) })
 mybattbox = widget({ type = "textbox", align = "right" })
 mytimebox = widget({ type = "textbox", align = "right" })
 mydatebox = widget({ type = "textbox", align = "right" })
+mydatebox:buttons({ button({}, 1, spawn_cmd["notify_date"]) })
 mympdbox = widget({ type = "textbox", align = "right" })
 mympdbox:buttons({
     button({}, 4, function() spawn_cmd["mpc"]("prev") end),
     button({}, 5, function() spawn_cmd["mpc"]("next") end),
     button({}, 3, function() spawn_cmd["mpc"]("toggle") end),
-    button({}, 1, function() spawn_cmd["ncmpc"]() end)
+    button({}, 1, spawn_cmd["ncmpc"])
 })
 myvolbox = widget({ type = "textbox", align = "right" })
 myvolbox:buttons({
@@ -240,8 +241,9 @@ globalkeys =
 
     key({ modkey, "Shift"   }, "c",     function () awful.util.spawn("python /home/piotrek/.scripts/color-chooser.py") end),
     key({ modkey            }, "m",     function () spawn_cmd["mail"]() end),
+    key({ modkey            }, "h",     function () spawn_cmd["sysload"]() end),
     key({ modkey            }, "s",     function () spawn_cmd["terminal"]("slrn") end),
-    key({ modkey            }, "c",     function () spawn_cmd["temrinal"]("mc") end),
+    key({ modkey            }, "c",     function () spawn_cmd["terminal"]("mc") end),
     key({ modkey            }, "r",     function () spawn_cmd["rss"]() end),
 
     key({ "Control", "Mod1" }, "Return", function () spawn_cmd["terminal"]("ssh husiatyn@wit.edu.pl") end),

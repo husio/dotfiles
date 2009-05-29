@@ -6,8 +6,8 @@ Xft*lcdfilter: 5
 Xft*minspace: true
 
 # {{{ ncmpc 
-ncmpc*faceName:    Fixed
-ncmpc*faceSize:         9
+ncmpc*faceName:    Mono
+ncmpc*faceSize:    8
 ncmpc*background:  #1D1D1D
 ncmpc*foreground:  #E2E2E2
 ncmpc*cursorColor: #000000
@@ -34,7 +34,6 @@ ncmpc*color15:     #B8D7EC
 XTerm*italicULMode:     on
 XTerm*colorULMode:      on
 #XTerm*faceName:         Terminus
-#XTerm*faceName:         VeraMono
 XTerm*faceName:         Mono
 XTerm*faceSize:         8
 XTerm*termName:         xterm-color
