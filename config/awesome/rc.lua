@@ -22,6 +22,7 @@ spawn_cmd = {
     ["notify_date"] = function() -- awful.util.spawn([[ notify-send "`cal`" ]])
                                 end,
     ["sysload"] = function() awful.util.spawn(terminal.." -e htop") end,
+    ["wifi-select"] = function() awful.util.spawn(terminal.." -fs 10 -class \"wifi-select\" -geometry 60x24+400+320 -e sudo wifi-select wlan0") end,
 }
 
 layouts =
@@ -36,6 +37,7 @@ layouts =
 floatapps =
 {
     ["MPlayer"] = true,
+    ["wifi-select"] = true,
     ["gajim.py"] = true,
     ["pidgin"] = true,
     ["sonata"] = true,
@@ -235,16 +237,17 @@ globalkeys =
     key({ modkey            }, ",",     function () spawn_cmd["mpc"]("prev")  end),
     key({ modkey            }, ".",     function () spawn_cmd["mpc"]("next") end),
     key({ modkey            }, "/",     function () spawn_cmd["mpc"]("toggle") end),
-    key({ modkey            }, "n",     function () spawn_cmd["ncmpc"]() end),
+    key({ modkey            }, "n",     spawn_cmd["ncmpc"]),
 
     key({ modkey            }, "a",     function () spawn_cmd["terminal"]("alsamixer") end),
 
     key({ modkey, "Shift"   }, "c",     function () awful.util.spawn("python /home/piotrek/.scripts/color-chooser.py") end),
-    key({ modkey            }, "m",     function () spawn_cmd["mail"]() end),
-    key({ modkey            }, "h",     function () spawn_cmd["sysload"]() end),
-    key({ modkey            }, "s",     function () spawn_cmd["terminal"]("slrn") end),
+    key({ modkey            }, "m",     spawn_cmd["mail"]),
+    key({ modkey            }, "s",     spawn_cmd["sysload"]),
+    --key({ modkey            }, "s",     function () spawn_cmd["terminal"]("slrn") end),
     key({ modkey            }, "c",     function () spawn_cmd["terminal"]("mc") end),
-    key({ modkey            }, "r",     function () spawn_cmd["rss"]() end),
+    key({ modkey            }, "r",     spawn_cmd["rss"]),
+    key({ modkey            }, "w",     spawn_cmd["wifi-select"]),
 
     key({ "Control", "Mod1" }, "Return", function () spawn_cmd["terminal"]("ssh husiatyn@wit.edu.pl") end),
     key({ modkey,   "Shift" }, "Return", function () spawn_cmd["terminal"]("ssh piotrek@192.168.0.1") end),
@@ -264,7 +267,7 @@ globalkeys =
 
     key({ modkey, "Shift" }, "Delete", function () awful.util.spawn("sudo poweroff") end),
 
-    -- Prompt
+    -- Prmpt
     key({ modkey }, "d",
         function ()
             awful.prompt.run({ prompt = "Run: " },
@@ -272,6 +275,14 @@ globalkeys =
             awful.util.spawn, awful.completion.bash,
             awful.util.getdir("cache") .. "/history")
         end),
+
+    key({ modkey }, "x", 
+        function ()
+            awful.prompt.run({ prompt = "Run Lua code: " },
+            mypromptbox[mouse.screen],
+            awful.util.eval, nil,
+            awful.util.getdir("cache") .. "/history_eval")
+        end)
 }
 
 -- Client awful tagging: this is useful to tag some clients and then do stuff like move to tag on them
@@ -467,4 +478,23 @@ awful.hooks.timer.register(30,
 
 mpd_info_update()
 volume_info_update()
+
+--[[
+hooks.dbus(
+    function(t, path, arg1, arg2, arg3)
+        -- t: signal, method_call, method_return or error
+        local t = tostring(t)
+        local path = tostring(path)
+        local arg1 = tostring(arg1)
+        local arg2 = tostring(arg2)
+        local arg3 = tostring(arg3)
+        local f = io.open("/tmp/lua.dbus.log", "a")
+        f:write("t:"..t.."  path:"..path.."  arg1:"..arg1.."  arg2:"..arg2.."  arg3:"..arg3.."\n")
+        f:close()
+        return "s", "hello"
+    end)
+dbus.add_match('org.awesome.test', 'test_call')
+dbus.add_match('test_call', 'org.awesome.test')
+--]]
+
 -- }}}

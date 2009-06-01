@@ -38,9 +38,9 @@ XTerm*faceName:         Mono
 XTerm*faceSize:         8
 XTerm*termName:         xterm-color
 
-XTerm*background:  #000000
-XTerm*foreground:  #F7F7F7
-XTerm*cursorColor: #cdc092
+*background:  #000000
+*foreground:  #F7F7F7
+*cursorColor: #cdc092
 !black
 XTerm*color0:      #000000
 !red
