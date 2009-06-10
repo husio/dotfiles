@@ -2,8 +2,8 @@ Xft*dpi:	    100
 Xft*antialias:	true
 Xft.hinting:    true
 Xft.hintstyle:  hintfull
-Xft*lcdfilter: 5
-Xft*minspace: true
+Xft*lcdfilter:  5
+Xft*minspace:   true
 
 # {{{ ncmpc 
 ncmpc*faceName:    Mono
@@ -33,9 +33,10 @@ ncmpc*color15:     #B8D7EC
 # {{{ xterm
 XTerm*italicULMode:     on
 XTerm*colorULMode:      on
-#XTerm*faceName:         Terminus
-XTerm*faceName:         Mono
-XTerm*faceSize:         8
+XTerm*faceName:         Terminus
+#XTerm*faceName:         Mono
+#XTerm*faceName:         Fixed
+XTerm*faceSize:         9
 XTerm*termName:         xterm-color
 
 *background:  #000000

@@ -3,7 +3,7 @@ require("beautiful")
 --require("naughty")
 require("revelation")
 
-theme_path = "/home/piotrek/.config/awesome/themes/dark/theme"
+theme_path = os.getenv("HOME") .. "/.config/awesome/themes/dark/theme"
 beautiful.init(theme_path)
 
 terminal = "xterm"
@@ -12,17 +12,17 @@ editor_cmd = terminal .. " -e " .. editor
 modkey = "Mod4"
 
 spawn_cmd = {
-    ["terminal"] = function(cmd) awful.util.spawn(terminal.." -e "..cmd) end,
-    ["ncmpc"] = function() awful.util.spawn(terminal .. " -fs 8 -class \"ncmpc\" -geometry 47x56+944+16 -bw 0 -e ncmpc") end,
-    ["editor"] = function(file) file = file or ''; awful.util.spawn(terminal .. "-e vim "..file) end,
-    ["rss"] = function() awful.util.spawn(terminal .. " -e canto; cd /home/piotrek/.config/awesome/actions/ && ./rss.sh") end,
-    ["mail"] = function() awful.util.spawn(terminal .. " -e mutt -f ~/.Mail/phusiatynski && cd /home/piotrek/.config/awesome/actions/ && ./mail.sh") end,
+    ["terminal"] = function(cmd) awful.util.spawn_with_shell(terminal.." -e "..cmd) end,
+    ["ncmpc"] = function() awful.util.spawn_with_shell(terminal .. " -fs 8 -class \"ncmpc\" -geometry 47x56+944+16 -bw 0 -e ncmpc") end,
+    ["editor"] = function(file) file = file or ''; awful.util.spawn_with_shell(terminal .. "-e vim "..file) end,
+    ["rss"] = function() awful.util.spawn_with_shell(terminal .. " -e canto; cd /home/piotrek/.config/awesome/actions/ && ./rss.sh") end,
+    ["mail"] = function() awful.util.spawn_with_shell(terminal .. " -e mutt -f ~/.Mail/phusiatynski && cd /home/piotrek/.config/awesome/actions/ && ./mail.sh") end,
     ["mpc"] = function(cmd) awful.util.spawn("mpc "..cmd); mpd_info_update();  end,
     ["vol"] = function(cmd) volume_info_update("amixer -c 0 set Master "..cmd) end,
+    ["sysload"] = function() awful.util.spawn(terminal.." -e htop") end,
+    ["elinks"] = function() awful.util.spawn_with_shell(terminal .. " -e elinks") end,
     ["notify_date"] = function() -- awful.util.spawn([[ notify-send "`cal`" ]])
                                 end,
-    ["sysload"] = function() awful.util.spawn(terminal.." -e htop") end,
-    ["wifi-select"] = function() awful.util.spawn(terminal.." -fs 10 -class \"wifi-select\" -geometry 60x24+400+320 -e sudo wifi-select wlan0") end,
 }
 
 layouts =
@@ -37,7 +37,6 @@ layouts =
 floatapps =
 {
     ["MPlayer"] = true,
-    ["wifi-select"] = true,
     ["gajim.py"] = true,
     ["pidgin"] = true,
     ["sonata"] = true,
@@ -45,6 +44,7 @@ floatapps =
     ["ncmpc"] = true,
     ["nm-applet"] = true,
     ["wesnoth"] = true,
+    ["floaterm"] = true,
 }
 
 apptags =
@@ -119,9 +119,36 @@ for s = 1, screen.count() do
 end
 -- }}}
 
+-- {{{ Menu 
+awesome_menu = {
+    { "set wallpaper", os.getenv("HOME") .. "/.scripts/set_wallpaper" },
+    { "manual", terminal .. " -e man awesome" },
+    { "edit config", editor_cmd .. " " .. awful.util.getdir("config") .. "/rc.lua" },
+    { "restart", awesome.restart },
+    { "quit", awesome.quit }
+}
+
+administration_menu = {
+    { "restart network", terminal .. " -class \"floaterm\" -e /etc/rc.d/network restart" },
+    { "restart autowifi", terminal .. " -class \"floaterm\" -e /etc/rc.d/autowifi restart" },
+    { "htop", terminal .. " -e htop" },
+}
+
+mymainmenu = awful.menu.new({ 
+    items = { 
+        { "lock X session", "slock"},
+        { "open terminal", terminal },
+        { "administration tools", administration_menu },
+        { "awesome", awesome_menu },
+    }
+})
+
+mylauncher = awful.widget.launcher(
+    { image = image(beautiful.awesome_icon), menu = mymainmenu })
+-- }}}
+
+
 -- {{{ Wibox
-
-
 mymailbox = widget({ type = "textbox", align = "right" })
 mymailbox:buttons({ button({}, 1, spawn_cmd["mail"]) })
 myfanbox = widget({ type = "textbox", align = "right" })
@@ -240,6 +267,8 @@ globalkeys =
     key({ modkey            }, "n",     spawn_cmd["ncmpc"]),
 
     key({ modkey            }, "a",     function () spawn_cmd["terminal"]("alsamixer") end),
+    
+    key({ modkey,           }, "ISO_Level3_Shift", function () mymainmenu:show(true) end),
 
     key({ modkey, "Shift"   }, "c",     function () awful.util.spawn("python /home/piotrek/.scripts/color-chooser.py") end),
     key({ modkey            }, "m",     spawn_cmd["mail"]),
@@ -247,7 +276,7 @@ globalkeys =
     --key({ modkey            }, "s",     function () spawn_cmd["terminal"]("slrn") end),
     key({ modkey            }, "c",     function () spawn_cmd["terminal"]("mc") end),
     key({ modkey            }, "r",     spawn_cmd["rss"]),
-    key({ modkey            }, "w",     spawn_cmd["wifi-select"]),
+    key({ modkey            }, "e",     spawn_cmd["elinks"]),
 
     key({ "Control", "Mod1" }, "Return", function () spawn_cmd["terminal"]("ssh husiatyn@wit.edu.pl") end),
     key({ modkey,   "Shift" }, "Return", function () spawn_cmd["terminal"]("ssh piotrek@192.168.0.1") end),
