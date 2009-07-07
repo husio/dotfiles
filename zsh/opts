@@ -6,7 +6,7 @@ export SAVEHIST=3000
 export EDITOR=vim
 export BROWSER=elinks
 export NNTPSERVER='news.wsisiz.edu.pl'
-
+export VIMRUNTIME=/usr/share/vim
 
 
 autoload -U compinit; compinit

@@ -1,6 +1,6 @@
 #!/bin/bash
 
-. action.sh
+. $HOME/.config/awesome/actions/action.sh
 
 
 mail_boxes=(

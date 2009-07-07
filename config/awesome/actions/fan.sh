@@ -1,6 +1,6 @@
 #!/bin/bash
 
-. action.sh
+. $HOME/.config/awesome/actions/action.sh
 
 fan_speed_info="<span color=\"$color_normal\">fan: </span><span color=\"$color_light\">`/usr/bin/fan`</span>"
 
