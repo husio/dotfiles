@@ -3,7 +3,7 @@ require("beautiful")
 --require("naughty")
 require("revelation")
 
-theme_path = os.getenv("HOME") .. "/.config/awesome/themes/dark/theme"
+theme_path = os.getenv("HOME") .. "/.config/awesome/themes/gray/theme"
 beautiful.init(theme_path)
 
 terminal = "xterm"
@@ -151,7 +151,7 @@ mylauncher = awful.widget.launcher(
 -- {{{ Wibox
 mymailbox = widget({ type = "textbox", align = "right" })
 mymailbox:buttons({ button({}, 1, spawn_cmd["mail"]) })
-myfanbox = widget({ type = "textbox", align = "right" })
+--myfanbox = widget({ type = "textbox", align = "right" })
 myrssbox = widget({ type = "textbox", align = "right" })
 myrssbox:buttons({ button({}, 1, spawn_cmd["rss"]) })
 mybattbox = widget({ type = "textbox", align = "right" })
@@ -174,7 +174,7 @@ myvolbox:buttons({
 
 
 myseparator = widget({ type = "textbox", align = "right" })
-myseparator.text = "<span color=\"".. beautiful.fg_dark .."\">   ❂   </span>"
+myseparator.text = "<span color=\"".. beautiful.fg_dark .."\">   ⚪   </span>"
 
 mysystray = widget({ type = "systray", align = "right" })
 
@@ -203,8 +203,8 @@ for s = 1, screen.count() do
                            myrssbox,
                            myseparator,
                            mymailbox,
-                           myseparator,
-                           myfanbox,
+                           --myseparator,
+                           --myfanbox,
                            myseparator,
                            mybattbox,
                            myseparator,
