@@ -1,12 +1,12 @@
 Xft*dpi:	    100
 Xft*antialias:	true
-Xft.hinting:    true
-Xft.hintstyle:  hintfull
+Xft.hinting:    hintfull
+#Xft.hintstyle:  5
 Xft*lcdfilter:  5
 Xft*minspace:   true
 
 # {{{ ncmpc 
-ncmpc*faceName:    Mono
+ncmpc*faceName:    profont
 ncmpc*faceSize:    8
 ncmpc*background:  #1D1D1D
 ncmpc*foreground:  #E2E2E2
@@ -31,47 +31,76 @@ ncmpc*color15:     #B8D7EC
 # }}}
 
 # {{{ xterm
-XTerm*italicULMode:     on
-XTerm*colorULMode:      on
-XTerm*faceName:         Terminus
-#XTerm*faceName:         Mono
+XTerm*italicULMode:     true
+XTerm*boldMode:         false
+XTerm*colorULMode:      true
+#XTerm*faceName:         profont
+#XTerm*faceName:         Terminus
+XTerm*faceName:         Mono
 #XTerm*faceName:         Fixed
-XTerm*faceSize:         9
+XTerm*faceSize:         8
 XTerm*termName:         xterm-color
 
 *background:  #000000
 *foreground:  #F7F7F7
 *cursorColor: #cdc092
+! !black
+! XTerm*color0:      #000000
+! !red
+! XTerm*color1:      #A01515
+! !green
+! XTerm*color2:      #86BE51
+! !yellow
+! XTerm*color3:      #98AF00
+! !blue
+! XTerm*color4:      #4C8DB1
+! !purple
+! XTerm*color5:      #A6397A
+! !cyan
+! XTerm*color6:      #6B429F
+! !white
+! XTerm*color7:      #E9E9E9
+! !bright-black
+! XTerm*color8:      #3A3A3A
+! !bright-red
+! XTerm*color9:      #C4362D
+! !bright-green
+! XTerm*color10:     #75BE51
+! !bright-yellow
+! XTerm*color11:     #C5DC1D
+! !bright-blue
+! XTerm*color12:     #4C70B1
+! !bright-purple
+! XTerm*color13:     #8963B9
+! !bright-cyan
+! XTerm*color14:     #70ACAB
+! !bright-white
+! XTerm*color15:     #ffffff
+
+XTerm*foreground:     #F5F5F5
+XTerm*background:     #0A0A0A
 !black
-XTerm*color0:      #000000
-!red
-XTerm*color1:      #A01515
-!green
-XTerm*color2:      #86BE51
-!yellow
-XTerm*color3:      #98AF00
-!blue
-XTerm*color4:      #4C8DB1
-!purple
-XTerm*color5:      #A6397A
-!cyan
-XTerm*color6:      #6B429F
-!white
-XTerm*color7:      #E9E9E9
-!bright-black
-XTerm*color8:      #3A3A3A
-!bright-red
-XTerm*color9:      #C4362D
-!bright-green
-XTerm*color10:     #75BE51
-!bright-yellow
-XTerm*color11:     #C5DC1D
-!bright-blue
-XTerm*color12:     #4C70B1
-!bright-purple
-XTerm*color13:     #8963B9
-!bright-cyan
-XTerm*color14:     #70ACAB
-!bright-white
-XTerm*color15:     #ffffff
+XTerm*color0:         #0A0A0A
+XTerm*color8:         #3A3A3A
+!!red
+XTerm*color1:         #CF4E3F
+XTerm*color9:         #BA3121
+!!green
+XTerm*color2:         #80B43A
+XTerm*color10:        #6C9534
+!!brown/yellow
+XTerm*color3:         #E3BC4B
+XTerm*color11:        #BA852E
+!!blue
+XTerm*color4:         #778DA1
+XTerm*color12:        #53799B
+!!magenta
+XTerm*color5:         #9D658B
+XTerm*color13:        #734464
+!!cyan
+XTerm*color6:         #65929D
+XTerm*color14:        #47737E
+!!white
+XTerm*color7:         #FFFFFF
+XTerm*color15:        #F7F7F7
 # }}}

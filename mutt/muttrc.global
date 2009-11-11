@@ -61,4 +61,4 @@ source ~/.mutt/adressbook
 # Other files
 set signature=~/.signature
 source ~/.mutt/colors
-source ~/.mutt/gpgrc
+source ~/.mutt/gpg.rc

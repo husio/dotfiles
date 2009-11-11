@@ -1,0 +1,9 @@
+[user]
+	email = phusiatynski@gmail.com
+	name = Piotr Husiatyński
+[color]
+	diff = true
+[core]
+	editor = vim
+[merge]
+	tool = vimdiff
