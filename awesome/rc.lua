@@ -9,7 +9,7 @@ require("revelation")
 
 beautiful.init(os.getenv("HOME") .. "/.config/awesome/themes/theme.lua")
 
-terminal = "xterm"
+terminal = "xterm "
 editor = os.getenv("EDITOR") or "vim"
 editor_cmd = terminal .. " -e " .. editor
 
@@ -23,6 +23,7 @@ spawn_cmd = {
     ["editor"] = function(file) file = file or ''; awful.util.spawn_with_shell(terminal .. "-e vim "..file) end,
     ["rss"] = function() awful.util.spawn_with_shell(terminal .. " -e $HOME/.bin/run_rss.sh"); end,
     ["mail"] = function() awful.util.spawn_with_shell(terminal .. " -e $HOME/.bin/run_mail.sh"); update_mymail(); end,
+    --["mail"] = function() awful.util.spawn_with_shell(terminal .. "  -e mutt -F $HOME/.mutt/muttrc.phusiatynski.imap"); end,
     ["mail-list"] = function() awful.util.spawn_with_shell('imapfilter &; ' .. terminal .. " -e mutt -F ~/.mutt/muttrc.piotrhusiatynski.imap") end,
     ["mpc"] = function(cmd) awful.util.spawn("mpc "..cmd); update_mympd();  end,
     ["vol"] = function(cmd) update_myvol("amixer -c 0 set Master "..cmd) end,
@@ -117,8 +118,8 @@ for s = 1, screen.count() do
         mysep,
         s == 1 and mysystray or nil,
         mysep,
-        mybatt,
-        mysep,
+    --    mybatt,
+    --    mysep,
         myfan,
         mysep,
         mymail,
@@ -356,7 +357,7 @@ function update_mympd()
 end
 
 function update_mymail()
-    mymail.text = format('mail', '0')
+    --mymail.text = format('mail', tostring(new_mail))
 end
 
 function update_myrss()
@@ -392,11 +393,12 @@ function update_all()
     update_mymail()
     --update_myrss()
     update_myfan()
-    update_mybatt()
+    --update_mybatt()
 end
 
 acron = timer { timeout=60 }
 acron:add_signal("timeout", update_all)
 acron:start()
 update_all()
+mymail.text = format('mail', 0)
 -- }}}

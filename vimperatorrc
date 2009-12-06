@@ -1,5 +1,5 @@
 " restart Vimperator
-map <C-r> :restart<CR>
+"map <C-r> :restart<CR>
  
 " select next/previous tab
 map <C-l> gt
