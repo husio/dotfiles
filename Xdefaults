@@ -35,9 +35,10 @@ XTerm*italicULMode:     true
 XTerm*boldMode:         false
 XTerm*colorULMode:      true
 #XTerm*faceName:         profont
-#XTerm*faceName:         Terminus
-XTerm*faceName:         Mono
+XTerm*faceName:         Terminus
+#XTerm*faceName:         Mono
 #XTerm*faceName:         Fixed
+#XTerm*faceName:         iconsolata
 XTerm*faceSize:         8
 XTerm*termName:         xterm-color
 

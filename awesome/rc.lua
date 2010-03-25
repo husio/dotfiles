@@ -17,6 +17,10 @@ modkey = "Mod4"
 
 --{{{ spawn commands
 spawn_cmd = {
+    ["web-browser"] = function(uri)
+        if uri then uri = ' -u ' .. uri else uri = '' end
+        awful.util.spawn("uzbl-browser " .. uri) 
+    end,
     ["terminal"] = function(cmd) awful.util.spawn_with_shell(terminal.." -e "..cmd) end,
     ["ncmpc"] = function() awful.util.spawn_with_shell(terminal .. " -fs 8 -class \"ncmpc\" -geometry 56x70+944+26 -bw 0 -e ncmpc") end,
     ["ncmpcpp"] = function() awful.util.spawn_with_shell(terminal .. " -fs 8 -class \"ncmpcpp\" -geometry 190x58+50+30 -bw 0 -e ncmpcpp") end,
@@ -30,6 +34,8 @@ spawn_cmd = {
     ["sysload"] = function() awful.util.spawn(terminal.." -e htop") end,
     ["elinks"] = function() awful.util.spawn_with_shell(terminal .. " -e elinks") end,
     ["backlight"] = function(cmd) system('sudo macbook-backlight ' .. cmd) end,
+    ["toggle_monitor"] = function(cmd) system('xrandr --output LVDS1 --auto --output VGA1 --auto --right-of LVDS1 && killall xcompmgr') end,
+    ["screen"] = function() system(terminal .. " screen -drU") end,
 }
 --}}}
 --{{{ Mylib
@@ -201,14 +207,15 @@ globalkeys = awful.util.table.join(
     awful.key({ modkey,"Shift"    }, "n",     spawn_cmd["ncmpcpp"]),
     awful.key({ modkey            }, "m",     spawn_cmd["mail"]),
     awful.key({ modkey            }, "v",     spawn_cmd["mail-list"]),
-    awful.key({ modkey            }, "s",     spawn_cmd["sysload"]),
+    awful.key({ modkey            }, "s",     spawn_cmd["screen"]),
     awful.key({ modkey            }, "c",     function () spawn_cmd["terminal"]("mc") end),
     awful.key({ modkey            }, "r",     spawn_cmd["rss"]),
-    awful.key({ modkey            }, "e",     spawn_cmd["elinks"]),
+    awful.key({ modkey            }, "e",     spawn_cmd["web-browser"]),
+    awful.key({ modkey            }, "\\",    spawn_cmd["toggle_monitor"]),
     awful.key({ modkey, "Shift"   }, "c",     function () awful.util.spawn("python /home/piotrek/.scripts/color-chooser.py") end),
 
-    awful.key({ "Control", "Mod1" }, "Return", function () spawn_cmd["terminal"]("ssh husiatyn@wit.edu.pl") end),
-    awful.key({ modkey,   "Shift" }, "Return", function () spawn_cmd["terminal"]("ssh piotrek@192.168.0.1") end),
+    awful.key({ "Control", "Mod1" }, "Return", function () spawn_cmd["terminal"]("ssh husiatyn@oceanic.wsisiz.edu.pl") end),
+    awful.key({ modkey,   "Shift" }, "Return", function () spawn_cmd["terminal"]("ssh 192.168.0.1") end),
 
     awful.key({}, "XF86AudioRaiseVolume",     function() spawn_cmd["vol"]("5dB+") end),
     awful.key({}, "XF86AudioLowerVolume",     function() spawn_cmd["vol"]("5dB-") end),
@@ -303,8 +310,12 @@ awful.rules.rules = {
       properties = { floating = true } },
     { rule = { class = "Gimp" },
       properties = { floating = true } },
-    { rule = { class = "Shiretoko" },
+    { rule = { class = "Navigator" },
        properties = { tag = tags[1][2] } },
+    { rule = { class = "Namaroko" },
+       properties = { tag = tags[1][2] } },
+    { rule = { class = "Firefox" },
+      properties = { tag = tags[1][2] } },
 }
 -- }}}
 
@@ -361,7 +372,6 @@ function update_mymail()
 end
 
 function update_myrss()
-    myrss.text = format('rss', system("canto -a && ~/.bin/check_rss.sh"))
 end
 
 function update_myfan(options)
