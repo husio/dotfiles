@@ -15,6 +15,9 @@ set pager_format="%-10.10i %[!%a %b %d %R]"
 set date_format="!%H:%M %a %d %b     "
 set index_format="%2C%Z ¦ %-18.18F • %-80.79s • %{%b %d}"
 set folder_format="%2C %t %8s %d %N %f"
+set pager_stop
+
+set pager_index_lines=7
 
 auto_view text/html
 
