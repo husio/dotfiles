@@ -28,7 +28,7 @@ spawn_cmd = {
     ["rss"] = function() awful.util.spawn_with_shell(terminal .. " -e $HOME/.bin/run_rss.sh"); end,
     ["mail"] = function() awful.util.spawn_with_shell(terminal .. " -e $HOME/.bin/run_mail.sh"); update_mymail(); end,
     --["mail"] = function() awful.util.spawn_with_shell(terminal .. "  -e mutt -F $HOME/.mutt/muttrc.phusiatynski.imap"); end,
-    ["mail-list"] = function() awful.util.spawn_with_shell('imapfilter &; ' .. terminal .. " -e mutt -F ~/.mutt/muttrc.piotrhusiatynski.imap -f imaps://imap.gmail.com:993/gevent") end,
+    ["mail-list"] = function() awful.util.spawn_with_shell('imapfilter &; ' .. terminal .. " -e mutt -F ~/.mutt/muttrc.piotrhusiatynski.imap -f imaps://imap.gmail.com:993/python-bugs-announce") end,
     ["mpc"] = function(cmd) awful.util.spawn("mpc "..cmd); update_mympd();  end,
     ["vol"] = function(cmd) update_myvol("amixer -c 0 set Master "..cmd) end,
     ["sysload"] = function() awful.util.spawn(terminal.." -e htop") end,
@@ -318,6 +318,8 @@ awful.rules.rules = {
       properties = { tag = tags[2] } },
     { rule = { class = "xpad" },
       properties = { floating = true } },
+    { rule = { class = "Namoroka" },
+      properties = { tag = tags[1][2] } },
 }
 -- }}}
 

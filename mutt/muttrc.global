@@ -13,7 +13,7 @@ set send_charset="utf-8"
 set charset="utf-8"
 set pager_format="%-10.10i %[!%a %b %d %R]"
 set date_format="!%H:%M %a %d %b     "
-set index_format="%2C%Z ¦ %-18.18F • %-80.79s • %{%b %d}"
+set index_format="%3C%Z ¦ %-28.28F | %-86.84s | %{%a %d-%m-%Y}"
 set folder_format="%2C %t %8s %d %N %f"
 set pager_stop
 
