@@ -1,14 +1,8 @@
-#screen -t rtorrent rtorrent_proxy
-
 autodetach on
 altscreen on
 startup_message off
 
-
-
-
 term screen-256color
 
 hardstatus alwayslastline
-hardstatus string '%{= kG}%-Lw%{= kW}%50> %n%f* %t%{= kG}%+Lw%< %{=kG}%-=%c:%s%{-}'
-hardstatus string '%{= kG}[ %{G}%H %{g}][%= %{=kw}%?%-Lw%?%{r}(%{W}%n*%f%t%?(%u)%?%{r})%{w}%?%+Lw%?%?%= %{g}][%{B} %m-%d%{W}%c %{g}]'
+hardstatus string '%{gk}[ %{G}%H %{g}][%= %{wk}%?%-Lw%?%{=b kR} (%{W}%n*%f %t%?(%u)%?%{=b kR})%{= kw}%?%+Lw%?%?%= %{g}][%{Y}%l%{g}] %{=b C}[ %m/%d %c ]%{W}'

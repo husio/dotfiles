@@ -8,6 +8,7 @@ require("naughty")
 require("revelation")
 
 beautiful.init(os.getenv("HOME") .. "/.config/awesome/themes/theme.lua")
+icons = os.getenv("HOME") .. "/.icons/custom"
 
 terminal = "xterm "
 editor = os.getenv("EDITOR") or "vim"
@@ -36,6 +37,7 @@ spawn_cmd = {
     ["backlight"] = function(cmd) system('sudo macbook-backlight ' .. cmd) end,
     ["toggle_monitor"] = function(cmd) system('xrandr --output LVDS1 --auto --output VGA1 --auto --right-of LVDS1 && killall xcompmgr') end,
     ["screen"] = function() system(terminal .. " screen -drU") end,
+    ["screen_rotate"] = function() system("$HOME/.bin/screen_rotate") end,
 }
 --}}}
 --{{{ Mylib
@@ -91,6 +93,7 @@ mysep.text = '<span color="'.. beautiful.fg_separator ..'">   ◉   </span>'
 myvol = widget({ type="textbox", align="right" })
 mympd = widget({ type="textbox", align="right" })
 mymail = widget({ type="textbox", align="right" })
+
 --myrss = widget({ type="textbox", align="right" })
 myfan = widget({ type="textbox", align="right" })
 mybatt = widget({ type="textbox", align="right" })
@@ -214,8 +217,10 @@ globalkeys = awful.util.table.join(
     awful.key({ modkey            }, "\\",    spawn_cmd["toggle_monitor"]),
     awful.key({ modkey, "Shift"   }, "c",     function () awful.util.spawn("python /home/piotrek/.scripts/color-chooser.py") end),
 
-    awful.key({ "Control", "Mod1" }, "Return", function () spawn_cmd["terminal"]("ssh husiatyn@oceanic.wsisiz.edu.pl") end),
+    awful.key({ "Control", "Mod1" }, "Return", function () spawn_cmd["terminal"]("ssh husiatyn@oceanic.wsisiz.edu.pl -t 'screen -drU'") end),
     awful.key({ modkey,   "Shift" }, "Return", function () spawn_cmd["terminal"]("ssh 192.168.0.1") end),
+    
+    awful.key({ modkey            }, "Delete",    spawn_cmd["screen_rotate"]),
 
     awful.key({}, "XF86AudioRaiseVolume",     function() spawn_cmd["vol"]("5dB+") end),
     awful.key({}, "XF86AudioLowerVolume",     function() spawn_cmd["vol"]("5dB-") end),

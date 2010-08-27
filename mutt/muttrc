@@ -11,7 +11,8 @@ set postponed=+TODO
 mailboxes \
         +phusiatynski +wsisiz \
         +trash +arch +sent \
-        +python +rootnode +TODO 
+        +python +rootnode +TODO \
+        +archive
 
 # set send account
 macro generic "<esc>1" ":set from='Piotr Husiatyński <phusiatynski@gmail.com>'  sendmail='/usr/bin/msmtp -a phusiatynski@gmail.com"
