@@ -1,0 +1,93 @@
+source ~/.mutt/muttrc.global
+
+# get passwords from secret file :>
+set my_pass_phusiatynski=`awk '/phusiatynski@gmail.com:/ {print $2}' ~/.mutt/passwords`
+set my_pass_piotrhusiatynski=`awk '/piotrhusiatynski@gmail.com:/ {print $2}' ~/.mutt/passwords`
+set my_pass_10clouds=`awk '/piotr.husiatynski@10clouds.com:/ {print $2}' ~/.mutt/passwords`
+set my_pass_husiatyn=`awk '/husiatyn@wit.edu.pl:/ {print $2}' ~/.mutt/passwords`
+
+# reset per-mailbox values
+account-hook . 'unset preconnect imap_user imap_pass imap_authenticators; \
+                      set ssl_starttls=yes'
+
+# ===========================================================================
+# phusiatynski@gmail.com
+set folder='imaps://phusiatynski@imap.gmail.com/'
+mailboxes =INBOX =[Gmail]/Drafts =[Gmail]/'Sent Mail'
+account-hook 'imaps://phusiatynski' "\
+    set imap_user=phusiatynski@gmail.com; \
+    set imap_pass=$my_pass_phusiatynski"
+folder-hook 'phusiatynski@' "\
+    set folder=imaps://phusiatynski@imap.gmail.com/; \
+    set postponed=+[Gmail]/Drafts; \
+    set record=+[Gmail]/'Sent Mail'; \
+    set smtp_url=smtp://phusiatynski@smtp.gmail.com:587; \
+    set smtp_pass=$my_pass_phusiatynski; \
+    set from='phusiatynski@gmail.com'"
+# ===========================================================================
+# piotrhusiatynski@gmail.com
+set folder='imaps://piotrhusiatynski@imap.gmail.com/'
+mailboxes =' ' =INBOX =luakit-dev =plush-cms =django-pl =[Gmail]/Drafts =[Gmail]/'Sent Mail'
+account-hook 'imaps://piotrhusiatynski' "\
+    set imap_user=piotrhusiatynski@gmail.com; \
+    set imap_pass=$my_pass_piotrhusiatynski"
+folder-hook 'piotrhusiatynski@' "\
+    set folder=imaps://piotrhusiatynski@imap.gmail.com/; \
+    set postponed=+[Gmail]/Drafts; \
+    set record=+[Gmail]/'Sent Mail'; \
+    set smtp_url=smtp://piotrhusiatynski@smtp.gmail.com:587; \
+    set smtp_pass=$my_pass_piotrhusiatynski; \
+    set from='piotrhusiatynski@gmail.com'"
+# ===========================================================================
+# piotr.husiatynski@10clouds.com
+set folder='imaps://piotr.husiatynski@10clouds.com:$my_pass_10clouds@imap.gmail.com/'
+mailboxes =' ' =INBOX =tagasauris =Drafts ='Sent Mail'
+account-hook 'imaps://piotr.husiatynski@10clouds.com' "\
+    set imap_user=piotr.husiatynski@10clouds.com; \
+    set imap_pass=$my_pass_10clouds"
+folder-hook 'piotr.husiatynski@10clouds.com' "\
+    set folder=imaps://piotr.husiatynski@10clouds.com@imap.gmail.com/; \
+    set postponed=+[Gmail]/Drafts; \
+    set record=+[Gmail]/'Sent Mail'; \
+    set smtp_url=smtp://piotr.husiatynski@10clouds.com@smtp.gmail.com:587; \
+    set smtp_pass=$my_pass_10clouds; \
+    set from='piotr.husiatynski@10clouds.com'"
+# ===========================================================================
+# husiatyn@wsisiz.edu.pl
+set folder='imaps://husiatyn:$my_pass_husiatyn@imap.wit.edu.pl/'
+mailboxes =' ' =INBOX =mail.Drafts =mail.Sent
+account-hook 'imaps://husiatyn' "\
+    set imap_user=husiatyn; \
+    set imap_pass=$my_pass_husiatyn"
+folder-hook 'husiatyn@' "\
+    set folder=imaps://husiatyn:$my_pass_husiatyn@imap.wit.edu.pl/; \
+    set postponed=mail.Drafts; \
+    set record=mail.Sent; \
+    set smtp_url=smtps://husiatyn@smtp.wit.edu.pl:465/; \
+    set smtp_pass=$my_pass_husiatyn; \
+    set from='husiatyn@wit.edu.pl'"
+
+
+
+
+set noconfirmappend
+set mail_check=300
+set nomove
+set pager_stop
+set header_cache=~/.mutt/cache/headers
+set message_cachedir="~/.mutt/cache/bodies
+set pager_index_lines=9
+set followup_to
+set honor_followup_to=yes
+
+# do not fetch missing mailboxes
+unset imap_check_subscribed
+# sync all accounts on startup
+unset imap_passive
+
+# default mailbox
+set spoolfile=imaps://phusiatynski@imap.gmail.com/INBOX
+
+# gmail spam macro
+macro index,pager S "<save-message>=[Gmail]/Spam<enter>"
+macro index,pager A "<save-message>=[Gmail]/All<enter>"

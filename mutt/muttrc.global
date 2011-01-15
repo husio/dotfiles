@@ -16,7 +16,9 @@ set date_format="!%H:%M %a %d %b     "
 set index_format="%3C%Z ¦ %-28.28F | %-86.84s | %{%a %d-%m-%Y}"
 set folder_format="%2C %t %8s %d %N %f"
 set pager_stop
-
+set forward_edit=yes
+set include=yes
+set history=200
 set pager_index_lines=7
 
 auto_view text/html
@@ -29,12 +31,6 @@ my_hdr X-Editor: `vim --version | head -n1`
 ignore *
 unignore  Date To From: Subject
 hdr_order From Date To Subject
-
-set forward_edit=yes
-set include=yes
-set history=200
-set sort=threads
-set sort_aux=reverse-date
 
 # ===========================================================================
 # Sidebar
@@ -54,8 +50,8 @@ macro pager b '<enter-command>toggle sidebar_visible<enter>'
 # ===========================================================================
 # Adress book
 set sort_alias = alias
-set reverse_alias 
-set alias_file = "~/.mutt/adressbook" 
+set reverse_alias
+set alias_file = "~/.mutt/adressbook"
 set alias_format=" %3n      %t      %-24a       %r "
 
 source ~/.mutt/adressbook

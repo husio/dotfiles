@@ -5,42 +5,19 @@ require("awful.rules")
 require("beautiful")
 require("naughty")
 
-require("revelation")
 
-beautiful.init(os.getenv("HOME") .. "/.config/awesome/themes/theme.lua")
-icons = os.getenv("HOME") .. "/.icons/custom"
+local HOME = os.getenv("HOME")
+local EDITOR = os.getenv("EDITOR") or "vim"
+
+beautiful.init(HOME .. "/.config/awesome/themes/faenza/theme.lua")
+icons = HOME .. "/.icons/custom"
 
 terminal = "xterm "
-editor = os.getenv("EDITOR") or "vim"
-editor_cmd = terminal .. " -e " .. editor
-
 modkey = "Mod4"
 
---{{{ spawn commands
-spawn_cmd = {
-    ["web-browser"] = function(uri)
-        if uri then uri = ' -u ' .. uri else uri = '' end
-        awful.util.spawn("uzbl-browser " .. uri) 
-    end,
-    ["terminal"] = function(cmd) awful.util.spawn_with_shell(terminal.." -e "..cmd) end,
-    ["ncmpc"] = function() awful.util.spawn_with_shell(terminal .. " -fs 8 -class \"ncmpc\" -geometry 56x70+944+26 -bw 0 -e ncmpc") end,
-    ["ncmpcpp"] = function() awful.util.spawn_with_shell(terminal .. " -fs 8 -class \"ncmpcpp\" -geometry 190x58+50+30 -bw 0 -e ncmpcpp") end,
-    ["editor"] = function(file) file = file or ''; awful.util.spawn_with_shell(terminal .. "-e vim "..file) end,
-    ["rss"] = function() awful.util.spawn_with_shell(terminal .. " -e $HOME/.bin/run_rss.sh"); end,
-    ["mail"] = function() awful.util.spawn_with_shell(terminal .. " -e $HOME/.bin/run_mail.sh"); update_mymail(); end,
-    --["mail"] = function() awful.util.spawn_with_shell(terminal .. "  -e mutt -F $HOME/.mutt/muttrc.phusiatynski.imap"); end,
-    ["mail-list"] = function() awful.util.spawn_with_shell('imapfilter &; ' .. terminal .. " -e mutt -F ~/.mutt/muttrc.piotrhusiatynski.imap -f imaps://imap.gmail.com:993/python-bugs-announce") end,
-    ["mpc"] = function(cmd) awful.util.spawn("mpc "..cmd); update_mympd();  end,
-    ["vol"] = function(cmd) update_myvol("amixer -c 0 set Master "..cmd) end,
-    ["sysload"] = function() awful.util.spawn(terminal.." -e htop") end,
-    ["elinks"] = function() awful.util.spawn_with_shell(terminal .. " -e elinks") end,
-    ["backlight"] = function(cmd) system('sudo macbook-backlight ' .. cmd) end,
-    ["toggle_monitor"] = function(cmd) system('xrandr --output LVDS1 --auto --output VGA1 --auto --right-of LVDS1 && killall xcompmgr') end,
-    ["screen"] = function() system(terminal .. " screen -drU") end,
-    ["screen_rotate"] = function() system("$HOME/.bin/screen_rotate") end,
-}
---}}}
---{{{ Mylib
+
+
+
 
 function system(command)
     local data_file = io.popen(command)
@@ -49,18 +26,29 @@ function system(command)
     return out
 end
 
-local label_color = beautiful.fg_widget_label
-local message_color = beautiful.fg_widget_message
-
-function format(label, message)
-    -- return formated message
-    local label = '<span color="'.. label_color ..'">'.. label ..'</span>'
-    local message = '<span color="'.. message_color ..'">'.. message ..'</span>'
-    return label .. ': ' .. message
-end
-
---}}}
-
+spawn_cmd = {
+    ["web-browser"] = function(uri)
+        if uri then uri = ' -u ' .. uri else uri = '' end
+        awful.util.spawn("uzbl-browser " .. uri)
+    end,
+    ["terminal"] = function(cmd) awful.util.spawn_with_shell(terminal.." -e "..cmd) end,
+    ["ncmpc"] = function() awful.util.spawn_with_shell(terminal .. " -fs 8 -class \"ncmpc\" -geometry 56x70+944+26 -bw 0 -e ncmpc") end,
+    ["ncmpcpp"] = function() awful.util.spawn_with_shell(terminal .. " -fs 8 -class \"ncmpcpp\" -geometry 190x58+50+30 -bw 0 -e ncmpcpp") end,
+    ["editor"] = function(file) file = file or ''; awful.util.spawn_with_shell(terminal .. "-e vim "..file) end,
+    ["rss"] = function() awful.util.spawn_with_shell(terminal .. " -e $HOME/.bin/run_rss.sh"); end,
+    ["mail"] = function() awful.util.spawn_with_shell(terminal .. " -e $HOME/.bin/run_mail.sh"); update_mymail(); end,
+    --["mail"] = function() awful.util.spawn_with_shell(terminal .. "  -e mutt -F $HOME/.mutt/muttrc.phusiatynski.imap"); end,
+    ["mail-list"] = function() awful.util.spawn_with_shell('imapfilter &; ' .. terminal .. " -e mutt -F ~/.mutt/muttrc.piotrhusiatynski.imap -f imaps://imap.gmail.com:993/luakit-dev") end,
+    ["mpc"] = function(cmd) awful.util.spawn("mpc "..cmd); update_mympd();  end,
+    ["vol"] = function(cmd) update_myvol("amixer -c 0 set Master "..cmd) end,
+    ["sysload"] = function() awful.util.spawn(terminal.." -e htop") end,
+    ["elinks"] = function() awful.util.spawn_with_shell(terminal .. " -e elinks") end,
+    ["backlight"] = function(cmd) system('sudo macbook-backlight ' .. cmd) end,
+    ["toggle_monitor"] = function(cmd) system('xrandr --output LVDS1 --auto --output VGA1 --auto --right-of LVDS1 && killall xcompmgr') end,
+    ["screen"] = function() system(terminal .. " screen -drU") end,
+    ["screen_rotate"] = function() system("$HOME/.bin/screen_rotate") end,
+    ["web_browser"] = function() awful.util.spawn_with_shell("luakit") end,
+}
 
 layouts = {
     awful.layout.suit.tile,
@@ -70,35 +58,20 @@ layouts = {
 
 tags = {}
 for s = 1, screen.count() do
-    tags[s] = awful.tag({ 1, 2, 3, 4, 5, 6, 7, 8, 9 }, s, layouts[1])
+    tags[s] = awful.tag({1, 2, 3, 4, 5, 6, 7, 8, 9}, s, layouts[1])
 end
 
-myawesomemenu = {
-   { "manual", terminal .. " -e man awesome" },
-   { "edit config", editor_cmd .. " " .. awful.util.getdir("config") .. "/rc.lua" },
-   { "restart", awesome.restart },
-   { "quit", awesome.quit }
-}
 
-mymainmenu = awful.menu({
-    items = {
-        { "awesome", myawesomemenu, beautiful.awesome_icon },
-        { "open terminal", terminal }
-    }
-})
+w_clock = awful.widget.textclock({ align="right"})
+w_sep = widget({type="textbox", align="right"})
+w_sep.text = '   '
+w_vol_i = widget({type="imagebox", align="right"})
+w_mpd = widget({type="textbox", align="right"})
+w_mpd_i = widget({type="imagebox", align="right"})
+w_mail = widget({type="imagebox", align="right"})
+w_mail.image = image(beautiful.icons.mail.normal)
+w_systray = widget({type="systray"})
 
-myclock = awful.widget.textclock({ align="right" })
-mysep = widget({ type="textbox", align="right"})
-mysep.text = '<span color="'.. beautiful.fg_separator ..'">   ◉   </span>'
-myvol = widget({ type="textbox", align="right" })
-mympd = widget({ type="textbox", align="right" })
-mymail = widget({ type="textbox", align="right" })
-
---myrss = widget({ type="textbox", align="right" })
-myfan = widget({ type="textbox", align="right" })
-mybatt = widget({ type="textbox", align="right" })
-
-mysystray = widget({ type="systray" })
 mywibox = {}
 mypromptbox = {}
 mytaglist = {}
@@ -123,34 +96,21 @@ for s = 1, screen.count() do
             layout = awful.widget.layout.horizontal.leftright
 
         },
-        myclock,
-        mysep,
-        s == 1 and mysystray or nil,
-        mysep,
-    --    mybatt,
-    --    mysep,
-        myfan,
-        mysep,
-        mymail,
-        mysep,
-    --    myrss,
-    --    mysep,
-        myvol,
-        mysep,
-        mympd,
+        w_clock,
+        w_sep,
+        s == 1 and w_systray or nil,
+        w_sep,
+        w_mail,
+        w_sep,
+        w_vol_i,
+        w_sep,
+        w_mpd_i,
+        w_sep,
+        w_mpd,
         layout=awful.widget.layout.horizontal.rightleft
     }
 end
 
--- {{{ Mouse bindings
-root.buttons(awful.util.table.join(
-    awful.button({ }, 3, function () mymainmenu:toggle() end),
-    awful.button({ }, 4, awful.tag.viewnext),
-    awful.button({ }, 5, awful.tag.viewprev)
-))
--- }}}
-
--- {{{ Key bindings
 globalkeys = awful.util.table.join(
     awful.key({ modkey,           }, "Left",   awful.tag.viewprev       ),
     awful.key({ modkey,           }, "Right",  awful.tag.viewnext       ),
@@ -166,7 +126,6 @@ globalkeys = awful.util.table.join(
             awful.client.focus.byidx(-1)
             if client.focus then client.focus:raise() end
         end),
-    awful.key({ modkey,           }, "w", function () mymainmenu:show(true)        end),
 
     awful.key({ modkey, "Shift"   }, "j", function () awful.client.swap.byidx(  1)    end),
     awful.key({ modkey, "Shift"   }, "k", function () awful.client.swap.byidx( -1)    end),
@@ -211,15 +170,16 @@ globalkeys = awful.util.table.join(
     awful.key({ modkey            }, "m",     spawn_cmd["mail"]),
     awful.key({ modkey            }, "v",     spawn_cmd["mail-list"]),
     awful.key({ modkey            }, "s",     spawn_cmd["screen"]),
+    awful.key({ modkey,           }, "w",     spawn_cmd["web_browser"]),
     awful.key({ modkey            }, "c",     function () spawn_cmd["terminal"]("mc") end),
     awful.key({ modkey            }, "r",     spawn_cmd["rss"]),
     awful.key({ modkey            }, "e",     spawn_cmd["web-browser"]),
     awful.key({ modkey            }, "\\",    spawn_cmd["toggle_monitor"]),
-    awful.key({ modkey, "Shift"   }, "c",     function () awful.util.spawn("python /home/piotrek/.scripts/color-chooser.py") end),
+    awful.key({ modkey, "Shift"   }, "c",     function () awful.util.spawn("/home/piotrek/.scripts/color-chooser.py") end),
 
     awful.key({ "Control", "Mod1" }, "Return", function () spawn_cmd["terminal"]("ssh husiatyn@oceanic.wsisiz.edu.pl -t 'screen -drU'") end),
     awful.key({ modkey,   "Shift" }, "Return", function () spawn_cmd["terminal"]("ssh 192.168.0.1") end),
-    
+
     awful.key({ modkey            }, "Delete",    spawn_cmd["screen_rotate"]),
 
     awful.key({}, "XF86AudioRaiseVolume",     function() spawn_cmd["vol"]("5dB+") end),
@@ -234,7 +194,6 @@ globalkeys = awful.util.table.join(
 )
 
 clientkeys = awful.util.table.join(
-    --awful.key({ modkey,           }, "f",      function (c) c.fullscreen = not c.fullscreen  end),
     awful.key({ modkey,           }, "q",      function (c) c:kill()                         end),
     awful.key({ modkey, "Control" }, "space",  awful.client.floating.toggle                     ),
     awful.key({ modkey, "Control" }, "Return", function (c) c:swap(awful.client.getmaster()) end),
@@ -248,15 +207,11 @@ clientkeys = awful.util.table.join(
         end)
 )
 
--- Compute the maximum number of digit we need, limited to 9
 keynumber = 0
 for s = 1, screen.count() do
    keynumber = math.min(9, math.max(#tags[s], keynumber));
 end
 
--- Bind all key numbers to tags.
--- Be careful: we use keycodes to make it works on any keyboard layout.
--- This should map on the top row of your keyboard, usually 1 to 9.
 for i = 1, keynumber do
     globalkeys = awful.util.table.join(globalkeys,
         awful.key({ modkey }, "#" .. i + 9,
@@ -292,13 +247,9 @@ clientbuttons = awful.util.table.join(
     awful.button({ modkey }, 1, awful.mouse.client.move),
     awful.button({ modkey }, 3, awful.mouse.client.resize))
 
--- Set keys
 root.keys(globalkeys)
--- }}}
 
--- {{{ Rules
 awful.rules.rules = {
-    -- All clients will match this rule.
     { rule = { },
       properties = { border_width = beautiful.border_width,
                      border_color = beautiful.border_normal,
@@ -310,6 +261,8 @@ awful.rules.rules = {
     { rule = { class = "Gajim.py" },
       properties = { floating = true } },
     { rule = { class = "Empathy" },
+      properties = { floating = true } },
+    { rule = { class = "Skype" },
       properties = { floating = true } },
     { rule = { class = "Sonata" },
       properties = { floating = true } },
@@ -326,9 +279,7 @@ awful.rules.rules = {
     { rule = { class = "Namoroka" },
       properties = { tag = tags[1][2] } },
 }
--- }}}
 
--- {{{ Signals
 client.add_signal("manage", function (c, startup)
     c:add_signal("mouse::enter", function(c)
         if awful.layout.get(c.screen) ~= awful.layout.suit.magnifier
@@ -346,78 +297,49 @@ end)
 
 client.add_signal("focus", function(c) c.border_color = beautiful.border_focus end)
 client.add_signal("unfocus", function(c) c.border_color = beautiful.border_normal end)
--- }}}
 
--- {{{ Panel widgets signal handlers
-myfan:buttons(awful.util.table.join(
-    awful.button({ }, 1, function()
-        update_myfan({up=500})
-    end),
-    awful.button({ }, 3, function()
-        update_myfan({down=500})
-    end)
-))
--- }}}
 
--- {{{ Panel info update
-function update_myvol(cmd)
+
+
+
+function string:split(sep)
+    local sep, fields = sep or ":", {}
+    local pattern = string.format("([^%s]+)", sep)
+    self:gsub(pattern, function(c) fields[#fields+1] = c end)
+    return fields
+end
+
+
+function update_vol(cmd)
     if cmd then system(cmd) end
-    local out = system([=[ amixer -c 0 sget Master | sed -n -e 's/.*Playback.*\[\(.*%\)\].*\[\(.*\)\]$/\1 \[\2\]/p' ]=])
-    myvol.text = format('vol', out)
+    local vol = system([=[ amixer -c 0 sget Master | sed -n -e 's/.*Playback.*\[\(.*%\)\].*\[\(.*\)\]$/\1 \2/p' ]=]):split(' ')
+    if vol[2] == 'off' then
+        w_vol_i.image = image(beautiful.icons.vol.muted)
+    else
+        w_vol_i.image = image(beautiful.icons.vol.normal)
+    end
     return out
 end
 
-function update_mympd()
+function update_mpd()
     local mpd_state = system([=[ mpc | sed -n -e "s/^\[\(.*\)\].*/\1/p" ]=]) or "stop"
     if mpd_state == "playing" then
         mpd_state = system("mpc | head -1")
+        w_mpd_i.image = image(beautiful.icons.mpd.playing)
+        w_mpd.text = mpd_state
+    else
+        w_mpd_i.image = image(beautiful.icons.mpd.stop)
+        w_mpd.text = ''
     end
-    mympd.text = format('mpd', mpd_state)
     return mpd_state
 end
 
-function update_mymail()
-    --mymail.text = format('mail', tostring(new_mail))
-end
-
-function update_myrss()
-end
-
-function update_myfan(options)
-    if options == nil then
-        myfan.text = format('fan', 
-            system('$HOME/.bin/fanspeed.sh') .. '°C')
-    elseif options.up then
-        local cur_speed = tonumber(system("$HOME/.bin/fanspeed.sh --output"))
-        myfan.text = format('fan', 
-            system('$HOME/.bin/fanspeed.sh ' .. (cur_speed + options.up)) .. '°C')
-    elseif options.down then
-        local cur_speed = tonumber(system("$HOME/.bin/fanspeed.sh --output"))
-        myfan.text = format('fan', 
-            system('$HOME/.bin/fanspeed.sh ' .. (cur_speed - options.down)) .. '°C')
-    elseif options.set then
-        myfan.text = format('fan', 
-            system('$HOME/.bin/fanspeed.sh ' .. options.set) .. '°C')
-    end
-end
-
-function update_mybatt()
-    local batt_state = system("acpi | awk '{ print $4 }'")
-    mybatt.text = format('batt', batt_state)
-end
-
 function update_all()
-    update_myvol()
-    update_mympd()
-    update_mymail()
-    --update_myrss()
-    update_myfan()
-    --update_mybatt()
+    update_vol()
+    update_mpd()
 end
 
 acron = timer { timeout=60 }
 acron:add_signal("timeout", update_all)
 acron:start()
 update_all()
-mymail.text = format('mail', 0)
--- }}}
