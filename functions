@@ -1,0 +1,71 @@
+#!/bin/zsh
+
+# pip zsh completion start
+function pip_completion {
+  local words cword
+  read -Ac words
+  read -cn cword
+  reply=($(COMP_WORDS="$words[*]" COMP_CWORD=$(( cword-1 )) PIP_AUTO_COMPLETE=1 $words[1]))
+}
+compctl -K pip_completion pip
+# pip zsh completion end
+
+function extract() 
+{
+    if [ -f $1 ]; then
+        case $1 in
+            *.tar.bz2)  tar -jxvf $1        ;;
+            *.tar.gz)   tar -zxvf $1        ;;
+            *.bz2)      bzip2 -d $1         ;;
+            *.gz)       gunzip -d $1        ;;
+            *.tar)      tar -xvf $1         ;;
+            *.tgz)      tar -zxvf $1        ;;
+            *.zip)      unzip $1            ;;
+            *.Z)        uncompress $1       ;;
+            *.rar)      unrar x $1            ;;
+            *)          echo "'$1' Error. Please go away" ;;
+        esac
+    else
+        echo "'$1' is not a valid file"
+    fi
+}
+
+
+function rtorrent_proxy()
+{
+    local dtach_sock='/mnt/sda5/torrents/dtach'
+    local port='8080'
+    local host='w3fast.wsisiz.edu.pl'
+    local user='husiatyn'
+
+    echo -n "($user) proxy account password: "
+
+    OLDSTTY=$(stty -g)
+    stty -echo
+    read password
+    stty $OLDSTTY
+    http_proxy="http://$user:$password@$host:$port/" rtorrent
+}
+
+
+function use_proxy()
+{
+    local port=8080
+    local host="w3fast.wsisiz.edu.pl"
+    local user="husiatyn"
+    echo -n "($user) proxy account password: "
+
+    OLDSTTY=$(stty -g)
+    stty -echo
+    read password
+    stty $OLDSTTY
+    export http_proxy="http://$user:$password@$host:$port/"
+    export https_proxy="http://$user:$password@$host:$port/"
+    export ftp_proxy="http://$user:$password@$host:$port/"
+    export HTTP_PROXY=$http_proxy
+    export HTTPS_PROXY=$https_proxy
+    export FTP_PROXY=$ftp_proxy
+    export svn_proxy="http://$user:$password@$host:$port/"
+    export git_proxy="http://$user:$password@$host:$port/"
+    echo
+}
