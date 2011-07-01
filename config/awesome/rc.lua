@@ -1,529 +1,424 @@
+-- Standard awesome library
 require("awful")
+require("awful.autofocus")
+require("awful.rules")
 require("beautiful")
---require("naughty")
+require("naughty")
+
 require("revelation")
 
-theme_path = os.getenv("HOME") .. "/.config/awesome/themes/gray/theme"
-beautiful.init(theme_path)
+--beautiful.init(os.getenv("HOME") .. "/.config/awesome/themes/faenza/theme.lua")
+beautiful.init(os.getenv("HOME") .. "/.config/awesome/themes/theme.lua")
+icons = os.getenv("HOME") .. "/.icons/custom"
 
-terminal = "xterm"
+terminal = "xterm "
 editor = os.getenv("EDITOR") or "vim"
 editor_cmd = terminal .. " -e " .. editor
+
 modkey = "Mod4"
 
+--{{{ spawn commands
 spawn_cmd = {
     ["terminal"] = function(cmd) awful.util.spawn_with_shell(terminal.." -e "..cmd) end,
-    ["ncmpc"] = function() awful.util.spawn_with_shell(terminal .. " -fs 8 -class \"ncmpc\" -geometry 47x56+944+16 -bw 0 -e ncmpc") end,
+    ["ncmpc"] = function() awful.util.spawn_with_shell(terminal .. " -fs 8 -class \"ncmpc\" -geometry 56x60+944+23 -bw 0 -e ncmpc") end,
+    ["ncmpcpp"] = function() awful.util.spawn_with_shell(terminal .. " -fs 8 -class \"ncmpcpp\" -geometry 190x58+50+30 -bw 0 -e ncmpcpp") end,
     ["editor"] = function(file) file = file or ''; awful.util.spawn_with_shell(terminal .. "-e vim "..file) end,
-    ["rss"] = function() awful.util.spawn_with_shell(terminal .. " -e canto; cd /home/piotrek/.config/awesome/actions/ && ./rss.sh") end,
-    ["mail"] = function() awful.util.spawn_with_shell(terminal .. " -e mutt -f ~/.Mail/phusiatynski && cd /home/piotrek/.config/awesome/actions/ && ./mail.sh") end,
-    ["mpc"] = function(cmd) awful.util.spawn("mpc "..cmd); mpd_info_update();  end,
-    ["vol"] = function(cmd) volume_info_update("amixer -c 0 set Master "..cmd) end,
+    ["rss"] = function() awful.util.spawn_with_shell(terminal .. " -e $HOME/.bin/run_rss.sh"); end,
+    ["mail"] = function() awful.util.spawn_with_shell(terminal .. " -e mutt -F ~/.mutt/muttrc.all.mailboxes -f ~/.Mail/phusiatynski/inbox && ~/.bin/check_mailboxes.sh") end,
+    ["mpc"] = function(cmd) awful.util.spawn("mpc "..cmd); update_mympd();  end,
+    ["vol"] = function(cmd) update_myvol("amixer -c 0 set Master "..cmd) end,
     ["sysload"] = function() awful.util.spawn(terminal.." -e htop") end,
     ["elinks"] = function() awful.util.spawn_with_shell(terminal .. " -e elinks") end,
-    ["notify_date"] = function() -- awful.util.spawn([[ notify-send "`cal`" ]])
-                                end,
+    ["backlight"] = function(cmd) system('sudo macbook-backlight ' .. cmd) end,
+    ["toggle_monitor"] = function(cmd) system('xrandr --output LVDS1 --auto --output VGA1 --auto --right-of LVDS1 && killall xcompmgr') end,
+    ["screen"] = function() system(terminal .. " screen -drU") end,
+    ["screen_rotate"] = function() system("$HOME/.bin/screen_rotate") end,
+    ["web_browser"] = function() awful.util.spawn_with_shell("luakit -n -b luakit") end,
+    ["reload_wallpaper"] = function() awful.util.spawn("sh $HOME/.bin/random_wallpaper.sh $HOME/.wallpapers/simpledesktop") end,
+    --["web_browser"] = function() awful.util.spawn_with_shell("firefox ") end,
 }
+--}}}
+--{{{ Mylib
 
-layouts =
-{
-    awful.layout.suit.tile,
-    --awful.layout.suit.tile.left,
-    --awful.layout.suit.tile.bottom,
-    awful.layout.suit.tile.top,
-    awful.layout.suit.floating
-}
+function system(command)
+    local data_file = io.popen(command)
+    local out = data_file:read()
+    data_file:close()
+    return out
+end
 
-floatapps =
-{
-    ["MPlayer"] = true,
-    ["gajim.py"] = true,
-    ["pidgin"] = true,
-    ["sonata"] = true,
-    ["gimp"] = true,
-    ["ncmpc"] = true,
-    ["nm-applet"] = true,
-    ["wesnoth"] = true,
-    ["floaterm"] = true,
-}
+local label_color = beautiful.fg_widget_label
+local message_color = beautiful.fg_widget_message
 
-apptags =
-{
-    ["Firefox"] = { screen = 1, tag = 2 },
-    ["Navigator"] = { screen =1, tag = 2},
-}
+function format(label, message)
+    -- return formated message
+    local label = '<span color="'.. label_color ..'">'.. label ..'</span>'
+    local message = '<span color="'.. message_color ..'">'.. (message or '') ..'</span>'
+    return label .. ': ' .. message
+end
 
-use_titlebar = false
-
---{{{ Naughty
---[[
-naughty.config.timeout          = 5
-naughty.config.screen           = 1
-naughty.config.position         = "top_right"
-naughty.config.margin           = 10
-naughty.config.height           = 240
-naughty.config.width            = 800
-naughty.config.gap              = 10
-naughty.config.ontop            = true
-naughty.config.font             = "Verdana 12"
-naughty.config.icon             = nil
-naughty.config.icon_size        = 42
---naughty.config.fg               = '#738DBF'
---naughty.config.bg               = '#313131'
---naughty.config.border_color     = '#8E8E8E'
-naughty.config.border_width     = 1
-naughty.config.hover_timeout    = nil
-]]--
 --}}}
 
--- {{{ Help functions
-function system(command)
-    local datafile = io.popen(command)
-    local out = datafile:read()
-    datafile:close()
-    return out
-end
 
-function readfile(fname)
-    local f = io.open(fname)
-    if f == nil then return " can't open: " .. fname end
-    local t = f:read()
-    f:close()
-    return t
-end
+layouts = {
+    awful.layout.suit.tile,
+    awful.layout.suit.tile.top,
+    awful.layout.suit.floating,
+}
 
-function get_mpd_info()
-    local mpd_state = system([=[ mpc | sed -n -e "s/^\[\(.*\)\].*/\1/p" ]=]) or "stop"
-    if mpd_state == "playing" then return system("mpc | head -1") end
-    return mpd_state or "lua script error: get_mpd_info"
-end
-
-function get_volume_info(arg)
-    arg = arg or "amixer sget Master "
-    arg = arg .. [=[ | sed -n -e 's/.*Playback.*\[\(.*%\)\].*\[\(.*\)\]$/\1 \[\2\]/p' ]=]
-    local out = system(arg)
-    return out
-end
--- }}}
-
--- {{{ Tags
 tags = {}
 for s = 1, screen.count() do
-    tags[s] = {}
-    for tagnumber = 1, 9 do
-        tags[s][tagnumber] = tag(tagnumber)
-        tags[s][tagnumber].screen = s
-        awful.layout.set(layouts[1], tags[s][tagnumber])
-    end
-    tags[s][1].selected = true
+    tags[s] = awful.tag({ 1, 2, 3, 4, 5, 6, 7, 8, 9 }, s, layouts[1])
 end
--- }}}
 
--- {{{ Menu 
-awesome_menu = {
-    { "set wallpaper", os.getenv("HOME") .. "/.scripts/set_wallpaper" },
-    { "manual", terminal .. " -e man awesome" },
-    { "edit config", editor_cmd .. " " .. awful.util.getdir("config") .. "/rc.lua" },
-    { "restart", awesome.restart },
-    { "quit", awesome.quit }
+myawesomemenu = {
+   { "manual", terminal .. " -e man awesome" },
+   { "edit config", editor_cmd .. " " .. awful.util.getdir("config") .. "/rc.lua" },
+   { "restart", awesome.restart },
+   { "quit", awesome.quit }
 }
 
-administration_menu = {
-    { "restart network", terminal .. " -class \"floaterm\" -e /etc/rc.d/network restart" },
-    { "restart autowifi", terminal .. " -class \"floaterm\" -e /etc/rc.d/autowifi restart" },
-    { "htop", terminal .. " -e htop" },
-}
-
-mymainmenu = awful.menu.new({ 
-    items = { 
-        { "lock X session", "slock"},
-        { "open terminal", terminal },
-        { "administration tools", administration_menu },
-        { "awesome", awesome_menu },
+mymainmenu = awful.menu({
+    items = {
+        { "awesome", myawesomemenu, beautiful.awesome_icon },
+        { "open terminal", terminal }
     }
 })
 
-mylauncher = awful.widget.launcher(
-    { image = image(beautiful.awesome_icon), menu = mymainmenu })
--- }}}
+myclock = awful.widget.textclock({ align="right" })
+mysep = widget({ type="textbox", align="right"})
+mysep.text = '<span color="'.. beautiful.fg_separator ..'">  ⟐  </span>'
+myvol = widget({ type="textbox", align="right" })
+mympd = widget({ type="textbox", align="right" })
+mymail = widget({ type="textbox", align="right" })
+mymail.text = format('mail', '-')
+mywall = widget({type="textbox", align="right"})
+mywall.text = "¤"
+mywall:add_signal('press', function () spawn_cmd['reload_wallpaper']() end)
 
+--myrss = widget({ type="textbox", align="right" })
+myfan = widget({ type="textbox", align="right" })
+mybatt = widget({ type="textbox", align="right" })
 
--- {{{ Wibox
-mymailbox = widget({ type = "textbox", align = "right" })
-mymailbox:buttons({ button({}, 1, spawn_cmd["mail"]) })
---myfanbox = widget({ type = "textbox", align = "right" })
-myrssbox = widget({ type = "textbox", align = "right" })
-myrssbox:buttons({ button({}, 1, spawn_cmd["rss"]) })
-mybattbox = widget({ type = "textbox", align = "right" })
-mytimebox = widget({ type = "textbox", align = "right" })
-mydatebox = widget({ type = "textbox", align = "right" })
-mydatebox:buttons({ button({}, 1, spawn_cmd["notify_date"]) })
-mympdbox = widget({ type = "textbox", align = "right" })
-mympdbox:buttons({
-    button({}, 4, function() spawn_cmd["mpc"]("prev") end),
-    button({}, 5, function() spawn_cmd["mpc"]("next") end),
-    button({}, 3, function() spawn_cmd["mpc"]("toggle") end),
-    button({}, 1, spawn_cmd["ncmpc"])
-})
-myvolbox = widget({ type = "textbox", align = "right" })
-myvolbox:buttons({
-    button({ }, 4, function() spawn_cmd["vol"]("1dB+") end),
-    button({ }, 5, function() spawn_cmd["vol"]("1dB-") end),
-    button({ }, 1, function() spawn_cmd["vol"]("toggle") end)
-})
-
-
-myseparator = widget({ type = "textbox", align = "right" })
-myseparator.text = "<span color=\"".. beautiful.fg_dark .."\">   ⚪   </span>"
-
-mysystray = widget({ type = "systray", align = "right" })
-
+mysystray = widget({ type="systray" })
 mywibox = {}
 mypromptbox = {}
 mytaglist = {}
-
-mytaglist.buttons = { button({ }, 1, awful.tag.viewonly),
-                      button({ modkey }, 1, awful.client.movetotag),
-                      button({ }, 3, function (tag) tag.selected = not tag.selected end),
-                      button({ modkey }, 3, awful.client.toggletag),
-                      button({ }, 4, awful.tag.viewnext),
-                      button({ }, 5, awful.tag.viewprev) }
+mytaglist.buttons = awful.util.table.join(
+                    awful.button({ }, 1, awful.tag.viewonly),
+                    awful.button({ modkey }, 1, awful.client.movetotag),
+                    awful.button({ }, 3, awful.tag.viewtoggle),
+                    awful.button({ modkey }, 3, awful.client.toggletag),
+                    awful.button({ }, 4, awful.tag.viewnext),
+                    awful.button({ }, 5, awful.tag.viewprev)
+                    )
 for s = 1, screen.count() do
-    mypromptbox[s] = widget({ type = "textbox", align = "left" })
-    mytaglist[s] = awful.widget.taglist.new(s, awful.widget.taglist.label.all, mytaglist.buttons)
-    mywibox[s] = wibox({ position = "top", fg = beautiful.fg_normal, bg = beautiful.bg_normal })
+    mytaglist[s] = awful.widget.taglist(s,
+            awful.widget.taglist.label.all, mytaglist.buttons)
+    mypromptbox[s] = awful.widget.prompt(
+        { layout=awful.widget.layout.horizontal.leftright })
+    mywibox[s] = awful.wibox({ position="top", screen=s })
     mywibox[s].widgets = {
-                           mylauncher,
-                           mytaglist[s],
-                           mypromptbox[s],
-                           mympdbox,
-                           myseparator,
-                           myvolbox,
-                           myseparator,
-                           myrssbox,
-                           myseparator,
-                           mymailbox,
-                           --myseparator,
-                           --myfanbox,
-                           myseparator,
-                           mybattbox,
-                           myseparator,
-                           mydatebox,
-                           myseparator,
-                           mytimebox,
-                           myseparator,
-                           s == 1 and mysystray or nil
-                       }
-    mywibox[s].screen = s
+        {
+            mytaglist[s],
+            mypromptbox[s],
+            layout = awful.widget.layout.horizontal.leftright
+
+        },
+        myclock,
+        mysep,
+        s == 1 and mysystray or nil,
+        mysep,
+        myfan,
+        mysep,
+        mybatt,
+        mysep,
+        mymail,
+        mysep,
+        myvol,
+        mysep,
+        mympd,
+        mysep,
+        mywall,
+        layout=awful.widget.layout.horizontal.rightleft
+    }
 end
--- }}}
 
 -- {{{ Mouse bindings
-root.buttons({
-    button({ }, 4, awful.tag.viewnext),
-    button({ }, 5, awful.tag.viewprev)
-})
+root.buttons(awful.util.table.join(
+    awful.button({ }, 3, function () mymainmenu:toggle() end),
+    awful.button({ }, 4, awful.tag.viewnext),
+    awful.button({ }, 5, awful.tag.viewprev)
+))
 -- }}}
 
 -- {{{ Key bindings
-globalkeys =
-{
-    key({ modkey,           }, "Left",   awful.tag.viewprev       ),
-    key({ modkey,           }, "Right",  awful.tag.viewnext       ),
-    key({ modkey,           }, "Escape", awful.tag.history.restore),
+globalkeys = awful.util.table.join(
+    awful.key({ modkey,           }, "Left",   awful.tag.viewprev       ),
+    awful.key({ modkey,           }, "Right",  awful.tag.viewnext       ),
+    awful.key({ modkey,           }, "Escape", awful.tag.history.restore),
 
-    key({ modkey,           }, "Tab",
+    awful.key({ modkey,           }, "j",
+        function ()
+            awful.client.focus.byidx( 1)
+            if client.focus then client.focus:raise() end
+        end),
+    awful.key({ modkey,           }, "k",
         function ()
             awful.client.focus.byidx(-1)
             if client.focus then client.focus:raise() end
         end),
 
-    key({ modkey            }, "`",     revelation.revelation),
-
-    -- Layout manipulation
-    key({ modkey, "Shift"   }, "j", function () awful.client.swap.byidx(  1) end),
-    key({ modkey, "Shift"   }, "k", function () awful.client.swap.byidx( -1) end),
-    key({ modkey, "Control" }, "j", function () awful.screen.focus( 1)       end),
-    key({ modkey, "Control" }, "k", function () awful.screen.focus(-1)       end),
-    key({ modkey,           }, "u", awful.client.urgent.jumpto),
-
-    -- Standard program
-    key({ modkey,           }, "Return", function () awful.util.spawn(terminal) end),
-    key({ modkey, "Control" }, "r", awesome.restart),
-    key({ modkey, "Shift"   }, "q", awesome.quit),
-
-    key({ modkey,           }, "l",     function () awful.tag.incmwfact( 0.05)    end),
-    key({ modkey,           }, "h",     function () awful.tag.incmwfact(-0.05)    end),
-    key({ modkey, "Shift"   }, "h",     function () awful.tag.incnmaster( 1)      end),
-    key({ modkey, "Shift"   }, "l",     function () awful.tag.incnmaster(-1)      end),
-    key({ modkey, "Control" }, "h",     function () awful.tag.incncol( 1)         end),
-    key({ modkey, "Control" }, "l",     function () awful.tag.incncol(-1)         end),
-    key({ modkey,           }, "space", function () awful.layout.inc(layouts,  1) end),
-    key({ modkey, "Shift"   }, "space", function () awful.layout.inc(layouts, -1) end),
-
-    key({ modkey            }, ",",     function () spawn_cmd["mpc"]("prev")  end),
-    key({ modkey            }, ".",     function () spawn_cmd["mpc"]("next") end),
-    key({ modkey            }, "/",     function () spawn_cmd["mpc"]("toggle") end),
-    key({ modkey            }, "n",     spawn_cmd["ncmpc"]),
-
-    key({ modkey            }, "a",     function () spawn_cmd["terminal"]("alsamixer") end),
-    
-    key({ modkey,           }, "ISO_Level3_Shift", function () mymainmenu:show(true) end),
-
-    key({ modkey, "Shift"   }, "c",     function () awful.util.spawn("python /home/piotrek/.scripts/color-chooser.py") end),
-    key({ modkey            }, "m",     spawn_cmd["mail"]),
-    key({ modkey            }, "s",     spawn_cmd["sysload"]),
-    --key({ modkey            }, "s",     function () spawn_cmd["terminal"]("slrn") end),
-    key({ modkey            }, "c",     function () spawn_cmd["terminal"]("mc") end),
-    key({ modkey            }, "r",     spawn_cmd["rss"]),
-    key({ modkey            }, "e",     spawn_cmd["elinks"]),
-
-    key({ "Control", "Mod1" }, "Return", function () spawn_cmd["terminal"]("ssh husiatyn@wit.edu.pl") end),
-    key({ modkey,   "Shift" }, "Return", function () spawn_cmd["terminal"]("ssh piotrek@192.168.0.1") end),
-
-
-    key({}, "XF86AudioRaiseVolume",     function() spawn_cmd["vol"]("5dB+") end),
-    key({}, "XF86AudioLowerVolume",     function() spawn_cmd["vol"]("5dB-") end),
-    key({}, "XF86AudioMute",            function() spawn_cmd["vol"]("toggle") end),
-
-    key({}, "XF86Eject",                function() awful.util.spawn("eject") end),
-
-    key({}, "XF86KbdBrightnessDown",    function() awful.util.spawn("sudo macbook-backlight -10") end),
-    key({}, "XF86KbdBrightnessUp",      function() awful.util.spawn("sudo macbook-backlight +10") end),
-
-    key({}, "XF86Display", function () awful.util.spawn("slock") end),
-
-
-    key({ modkey, "Shift" }, "Delete", function () awful.util.spawn("sudo poweroff") end),
-
-    -- Prmpt
-    key({ modkey }, "d",
+    awful.key({ modkey, "Shift"   }, "j", function () awful.client.swap.byidx(  1)    end),
+    awful.key({ modkey, "Shift"   }, "k", function () awful.client.swap.byidx( -1)    end),
+    awful.key({ modkey, "Control" }, "j", function () awful.screen.focus_relative( 1) end),
+    awful.key({ modkey, "Control" }, "k", function () awful.screen.focus_relative(-1) end),
+    awful.key({ modkey,           }, "u", awful.client.urgent.jumpto),
+    awful.key({ modkey,           }, "Tab",
         function ()
-            awful.prompt.run({ prompt = "Run: " },
-            mypromptbox[mouse.screen],
-            awful.util.spawn, awful.completion.bash,
-            awful.util.getdir("cache") .. "/history")
+            awful.client.focus.byidx(-1)
+            if client.focus then client.focus:raise() end
         end),
 
-    key({ modkey }, "x", 
-        function ()
-            awful.prompt.run({ prompt = "Run Lua code: " },
-            mypromptbox[mouse.screen],
-            awful.util.eval, nil,
-            awful.util.getdir("cache") .. "/history_eval")
-        end)
-}
+    -- Standard program
+    awful.key({ modkey,           }, "Return", function () awful.util.spawn(terminal) end),
+    awful.key({ modkey, "Control" }, "r", awesome.restart),
+    awful.key({ modkey, "Shift"   }, "q", awesome.quit),
 
--- Client awful tagging: this is useful to tag some clients and then do stuff like move to tag on them
-clientkeys =
-{
-    key({ modkey,           }, "f",      function (c) c.fullscreen = not c.fullscreen  end),
-    key({ modkey,           }, "q",      function (c) c:kill()                         end),
-    key({ modkey, "Control" }, "space",  awful.client.floating.toggle                     ),
-    key({ modkey, "Control" }, "Return", function (c) c:swap(awful.client.getmaster()) end),
-    key({ modkey, "Shift"   }, "r",      function (c) c:redraw()                       end),
-    key({ modkey }, "t", awful.client.togglemarked),
-    key({ modkey,}, "g",
+    awful.key({ modkey,           }, "l",     function () awful.tag.incmwfact( 0.05)    end),
+    awful.key({ modkey,           }, "h",     function () awful.tag.incmwfact(-0.05)    end),
+    awful.key({ modkey, "Shift"   }, "h",     function () awful.tag.incnmaster( 1)      end),
+    awful.key({ modkey, "Shift"   }, "l",     function () awful.tag.incnmaster(-1)      end),
+    awful.key({ modkey, "Control" }, "h",     function () awful.tag.incncol( 1)         end),
+    awful.key({ modkey, "Control" }, "l",     function () awful.tag.incncol(-1)         end),
+    awful.key({ modkey,           }, "space", function () awful.layout.inc(layouts,  1) end),
+    awful.key({ modkey, "Shift"   }, "space", function () awful.layout.inc(layouts, -1) end),
+
+    -- Prompt
+    awful.key({ modkey },            "d",     function () mypromptbox[mouse.screen]:run() end),
+
+    awful.key({ modkey }, "x",
+              function ()
+                  awful.prompt.run({ prompt = "Run Lua code: " },
+                  mypromptbox[mouse.screen].widget,
+                  awful.util.eval, nil,
+                  awful.util.getdir("cache") .. "/history_eval")
+              end),
+    awful.key({ modkey            }, ",",     function () spawn_cmd["mpc"]("prev")  end),
+    awful.key({ modkey            }, ".",     function () spawn_cmd["mpc"]("next") end),
+    awful.key({ modkey            }, "/",     function () spawn_cmd["mpc"]("toggle") end),
+    awful.key({ modkey            }, "n",     spawn_cmd["ncmpc"]),
+    awful.key({ modkey,"Shift"    }, "n",     spawn_cmd["ncmpcpp"]),
+    awful.key({ modkey            }, "m",     spawn_cmd["mail"]),
+    awful.key({ modkey            }, "v",     spawn_cmd["mail-list"]),
+    awful.key({ modkey            }, "s",     spawn_cmd["screen"]),
+    awful.key({ modkey,           }, "w",     spawn_cmd["web_browser"]),
+    awful.key({ modkey            }, "c",     function () spawn_cmd["terminal"]("mc") end),
+    awful.key({ modkey            }, "r",     spawn_cmd["rss"]),
+    awful.key({ modkey            }, "\\",    spawn_cmd["toggle_monitor"]),
+    awful.key({ modkey, "Shift"   }, "c",     function () awful.util.spawn("/home/piotrek/.scripts/color-chooser.py") end),
+
+    awful.key({ "Control", "Mod1" }, "Return", function () spawn_cmd["terminal"]("ssh husiatyn@oceanic.wsisiz.edu.pl -t 'screen -drU'") end),
+    awful.key({ modkey,   "Shift" }, "Return", function () spawn_cmd["terminal"]("ssh 192.168.0.1") end),
+
+    awful.key({ modkey            }, "Delete",    spawn_cmd["screen_rotate"]),
+
+    awful.key({}, "XF86AudioRaiseVolume",     function() spawn_cmd["vol"]("5dB+") end),
+    awful.key({}, "XF86AudioLowerVolume",     function() spawn_cmd["vol"]("5dB-") end),
+    awful.key({}, "XF86AudioMute",            function() spawn_cmd["vol"]("toggle") end),
+    awful.key({}, "XF86Eject",                function() awful.util.spawn("eject") end),
+    awful.key({}, "XF86KbdBrightnessDown",    function() spawn_cmd['backlight']('-20') end),
+    awful.key({}, "XF86KbdBrightnessUp",      function() spawn_cmd['backlight']('+20') end),
+    awful.key({}, "XF86Display", function () awful.util.spawn("slock") end),
+
+    awful.key({ modkey, "Shift" }, "Delete", function () awful.util.spawn("sudo poweroff") end)
+)
+
+clientkeys = awful.util.table.join(
+    --awful.key({ modkey,           }, "f",      function (c) c.fullscreen = not c.fullscreen  end),
+    awful.key({ modkey,           }, "q",      function (c) c:kill()                         end),
+    awful.key({ modkey, "Control" }, "space",  awful.client.floating.toggle                     ),
+    awful.key({ modkey, "Control" }, "Return", function (c) c:swap(awful.client.getmaster()) end),
+    awful.key({ modkey,           }, "o",      awful.client.movetoscreen                        ),
+    awful.key({ modkey, "Shift"   }, "r",      function (c) c:redraw()                       end),
+    awful.key({ modkey, "Control" }, "n",      function (c) c.minimized = not c.minimized    end),
+    awful.key({ modkey, "Control" }, "m",
         function (c)
             c.maximized_horizontal = not c.maximized_horizontal
             c.maximized_vertical   = not c.maximized_vertical
-        end),
-}
+        end)
+)
 
+-- Compute the maximum number of digit we need, limited to 9
 keynumber = 0
 for s = 1, screen.count() do
    keynumber = math.min(9, math.max(#tags[s], keynumber));
 end
 
+-- Bind all key numbers to tags.
+-- Be careful: we use keycodes to make it works on any keyboard layout.
+-- This should map on the top row of your keyboard, usually 1 to 9.
 for i = 1, keynumber do
-    table.insert(globalkeys,
-        key({ modkey }, i,
-            function ()
-                local screen = mouse.screen
-                if tags[screen][i] then
-                    awful.tag.viewonly(tags[screen][i])
-                end
-            end))
-    table.insert(globalkeys,
-        key({ modkey, "Control" }, i,
-            function ()
-                local screen = mouse.screen
-                if tags[screen][i] then
-                    tags[screen][i].selected = not tags[screen][i].selected
-                end
-            end))
-    table.insert(globalkeys,
-        key({ modkey, "Shift" }, i,
-            function ()
-                if client.focus and tags[client.focus.screen][i] then
-                    awful.client.movetotag(tags[client.focus.screen][i])
-                end
-            end))
-    table.insert(globalkeys,
-        key({ modkey, "Control", "Shift" }, i,
-            function ()
-                if client.focus and tags[client.focus.screen][i] then
-                    awful.client.toggletag(tags[client.focus.screen][i])
-                end
-            end))
+    globalkeys = awful.util.table.join(globalkeys,
+        awful.key({ modkey }, "#" .. i + 9,
+                  function ()
+                        local screen = mouse.screen
+                        if tags[screen][i] then
+                            awful.tag.viewonly(tags[screen][i])
+                        end
+                  end),
+        awful.key({ modkey, "Control" }, "#" .. i + 9,
+                  function ()
+                      local screen = mouse.screen
+                      if tags[screen][i] then
+                          awful.tag.viewtoggle(tags[screen][i])
+                      end
+                  end),
+        awful.key({ modkey, "Shift" }, "#" .. i + 9,
+                  function ()
+                      if client.focus and tags[client.focus.screen][i] then
+                          awful.client.movetotag(tags[client.focus.screen][i])
+                      end
+                  end),
+        awful.key({ modkey, "Control", "Shift" }, "#" .. i + 9,
+                  function ()
+                      if client.focus and tags[client.focus.screen][i] then
+                          awful.client.toggletag(tags[client.focus.screen][i])
+                      end
+                  end))
 end
 
-
-for i = 1, keynumber do
-    table.insert(globalkeys, key({ modkey, "Shift" }, "F" .. i,
-                 function ()
-                     local screen = mouse.screen
-                     if tags[screen][i] then
-                         for k, c in pairs(awful.client.getmarked()) do
-                             awful.client.movetotag(tags[screen][i], c)
-                         end
-                     end
-                 end))
-end
+clientbuttons = awful.util.table.join(
+    awful.button({ }, 1, function (c) client.focus = c; c:raise() end),
+    awful.button({ modkey }, 1, awful.mouse.client.move),
+    awful.button({ modkey }, 3, awful.mouse.client.resize))
 
 -- Set keys
 root.keys(globalkeys)
 -- }}}
 
--- {{{ Hooks
--- Hook function to execute when focusing a client.
-awful.hooks.focus.register(function (c)
-    if not awful.client.ismarked(c) then
-        c.border_color = beautiful.border_focus
+-- {{{ Rules
+awful.rules.rules = {
+    -- All clients will match this rule.
+    { rule = { },
+      properties = { border_width = beautiful.border_width,
+                     border_color = beautiful.border_normal,
+                     focus = true,
+                     keys = clientkeys,
+                     buttons = clientbuttons } },
+    { rule = { class = "MPlayer" },
+      properties = { floating = true } },
+    { rule = { class = "Gajim.py" },
+      properties = { floating = true } },
+    { rule = { class = "Empathy" },
+      properties = { floating = true } },
+    { rule = { class = "Pithos" },
+      properties = { floating = true } },
+    { rule = { class = "Skype" },
+      properties = { floating = true } },
+    { rule = { class = "Sonata" },
+      properties = { floating = true } },
+    { rule = { class = "ncmpc" },
+      properties = { floating = true } },
+    { rule = { class = "Gimp" },
+      properties = { floating = true } },
+    { rule = { class = "Namoroka" },
+       properties = { tag = tags[2] } },
+    { rule = { class = "Navigator" },
+      properties = { tag = tags[2] } },
+    { rule = { class = "xpad" },
+      properties = { floating = true } },
+    { rule = { class = "Namoroka" },
+      properties = { tag = tags[1][2] } },
+}
+-- }}}
+
+-- {{{ Signals
+client.add_signal("manage", function (c, startup)
+    c:add_signal("mouse::enter", function(c)
+        if awful.layout.get(c.screen) ~= awful.layout.suit.magnifier
+            and awful.client.focus.filter(c) then
+            client.focus = c
+        end
+    end)
+    if not startup then
+        if not c.size_hints.user_position and not c.size_hints.program_position then
+            awful.placement.no_overlap(c)
+            awful.placement.no_offscreen(c)
+        end
     end
 end)
 
--- Hook function to execute when unfocusing a client.
-awful.hooks.unfocus.register(function (c)
-    if not awful.client.ismarked(c) then
-        c.border_color = beautiful.border_normal
-    end
-end)
+client.add_signal("focus", function(c) c.border_color = beautiful.border_focus end)
+client.add_signal("unfocus", function(c) c.border_color = beautiful.border_normal end)
+-- }}}
 
--- Hook function to execute when marking a client
-awful.hooks.marked.register(function (c)
-    c.border_color = beautiful.border_marked
-end)
+-- {{{ Panel widgets signal handlers
+myfan:buttons(awful.util.table.join(
+    awful.button({ }, 1, function()
+        update_myfan({up=500})
+    end),
+    awful.button({ }, 3, function()
+        update_myfan({down=500})
+    end)
+))
+-- }}}
 
--- Hook function to execute when unmarking a client.
-awful.hooks.unmarked.register(function (c)
-    c.border_color = beautiful.border_focus
-end)
-
--- Hook function to execute when the mouse enters a client.
-awful.hooks.mouse_enter.register(function (c)
-    -- Sloppy focus, but disabled for magnifier layout
-    if awful.layout.get(c.screen) ~= awful.layout.suit.magnifier
-        and awful.client.focus.filter(c) then
-        client.focus = c
-    end
-end)
-
--- Hook function to execute when a new client appears.
-awful.hooks.manage.register(function (c, startup)
-    -- If we are not managing this application at startup,
-    -- move it to the screen where the mouse is.
-    -- We only do it for filtered windows (i.e. no dock, etc).
-    if not startup and awful.client.focus.filter(c) then
-        c.screen = mouse.screen
-    end
-
-    if use_titlebar then
-        -- Add a titlebar
-        awful.titlebar.add(c, { modkey = modkey })
-    end
-    -- Add mouse bindings
-    c:buttons({
-        button({ }, 1, function (c) client.focus = c; c:raise() end),
-        button({ modkey }, 1, awful.mouse.client.move),
-        button({ modkey }, 3, awful.mouse.client.resize)
-    })
-    -- New client may not receive focus
-    -- if they're not focusable, so set border anyway.
-    c.border_width = beautiful.border_width
-    c.border_color = beautiful.border_normal
-
-    -- Check if the application should be floating.
-    local cls = c.class
-    local inst = c.instance
-    if floatapps[cls] then
-        awful.client.floating.set(c, floatapps[cls])
-    elseif floatapps[inst] then
-        awful.client.floating.set(c, floatapps[inst])
-    end
-
-    -- Check application->screen/tag mappings.
-    local target
-    if apptags[cls] then
-        target = apptags[cls]
-    elseif apptags[inst] then
-        target = apptags[inst]
-    end
-    if target then
-        c.screen = target.screen
-        awful.client.movetotag(tags[target.screen][target.tag], c)
-    end
-
-    -- Do this after tag mapping, so you don't see it on the wrong tag for a split second.
-    client.focus = c
-
-    -- Set key bindings
-    c:keys(clientkeys)
-
-    -- Set the windows at the slave,
-    -- i.e. put it at the end of others instead of setting it master.
-    -- awful.client.setslave(c)
-
-    -- Honor size hints: if you want to drop the gaps between windows, set this to false.
-    -- c.size_hints_honor = false
-end)
-
--- Hook function to execute when arranging the screen.
--- (tag switch, new client, etc)
-awful.hooks.arrange.register(function (screen)
-    -- Give focus to the latest client in history if no window has focus
-    -- or if the current window is a desktop or a dock one.
-    if not client.focus then
-        local c = awful.client.focus.history.get(screen, 0)
-        if c then client.focus = c end
-    end
-end)
-
--- Hook called every minute
-
-function mpd_info_update()
-    mympdbox.text = "<span color=\"".. beautiful.fg_normal .."\">mpd: </span><span color=\"".. beautiful.fg_light .."\">" .. awful.util.escape(get_mpd_info()) .. "</span>"
+-- {{{ Panel info update
+function update_myvol(cmd)
+    if cmd then system(cmd) end
+    local out = system([=[ amixer -c 0 sget Master | sed -n -e 's/.*Playback.*\[\(.*%\)\].*\[\(.*\)\]$/\1 \[\2\]/p' ]=])
+    myvol.text = format('vol', out)
+    return out
 end
 
-function volume_info_update(arg)
-    myvolbox.text = "<span color=\"".. beautiful.fg_normal .."\">vol: </span><span color=\"".. beautiful.fg_light .."\">" .. get_volume_info(arg) .. "</span>"
+function update_mympd()
+    local mpd_state = system([=[ mpc | sed -n -e "s/^\[\(.*\)\].*/\1/p" ]=]) or "stop"
+    if mpd_state == "playing" then
+        mpd_state = system("mpc | head -1")
+    end
+    mympd.text = format('mpd', mpd_state)
+    return mpd_state
 end
 
-awful.hooks.timer.register(30,
-    function()
-        mpd_info_update()
-        volume_info_update()
-    end)
+function update_mybatt()
+    local batt_state = system([=[acpi | awk '{print $4 }']=])
+    mybatt.text = format('batt', batt_state)
+    return batt_state
+end
 
-mpd_info_update()
-volume_info_update()
+function update_mymail()
+    -- mail is being updated by cron script
+end
 
---[[
-hooks.dbus(
-    function(t, path, arg1, arg2, arg3)
-        -- t: signal, method_call, method_return or error
-        local t = tostring(t)
-        local path = tostring(path)
-        local arg1 = tostring(arg1)
-        local arg2 = tostring(arg2)
-        local arg3 = tostring(arg3)
-        local f = io.open("/tmp/lua.dbus.log", "a")
-        f:write("t:"..t.."  path:"..path.."  arg1:"..arg1.."  arg2:"..arg2.."  arg3:"..arg3.."\n")
-        f:close()
-        return "s", "hello"
-    end)
-dbus.add_match('org.awesome.test', 'test_call')
-dbus.add_match('test_call', 'org.awesome.test')
---]]
+function update_myfan(options)
+    if options == nil then
+        myfan.text = format('fan',
+            system('$HOME/.bin/fanspeed.sh') .. '°C')
+    elseif options.up then
+        local cur_speed = tonumber(system("$HOME/.bin/fanspeed.sh --output"))
+        myfan.text = format('fan',
+            system('$HOME/.bin/fanspeed.sh ' .. (cur_speed + options.up)) .. '°C')
+    elseif options.down then
+        local cur_speed = tonumber(system("$HOME/.bin/fanspeed.sh --output"))
+        myfan.text = format('fan',
+            system('$HOME/.bin/fanspeed.sh ' .. (cur_speed - options.down)) .. '°C')
+    elseif options.set then
+        myfan.text = format('fan',
+            system('$HOME/.bin/fanspeed.sh ' .. options.set) .. '°C')
+    end
+end
 
+function update_all()
+    update_myvol()
+    update_mympd()
+    update_myfan()
+    update_mymail()
+    update_mybatt()
+end
+
+acron = timer { timeout=90 }
+acron:add_signal("timeout", update_all)
+acron:start()
+update_all()
 -- }}}
