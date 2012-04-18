@@ -20,6 +20,7 @@ set forward_edit=yes
 set include=yes
 set history=200
 set pager_index_lines=7
+set copy=yes
 
 auto_view text/html
 
@@ -29,8 +30,8 @@ my_hdr X-Editor: `vim --version | head -n1`
 
 
 ignore *
-unignore  Date To From: Subject
-hdr_order From Date To Subject
+unignore  Date: To: From: Subject: CC:
+hdr_order From: Date: To: Subject:
 
 # ===========================================================================
 # Sidebar
@@ -59,5 +60,5 @@ source ~/.mutt/adressbook
 # ===========================================================================
 # Other files
 set signature=~/.signature
-source ~/.mutt/colors
+source ~/.mutt/colors/gray
 source ~/.mutt/gpg.rc

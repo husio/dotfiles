@@ -9,11 +9,12 @@ alias ls='ls --color=always'
 alias la='ls -a --color=always'
 alias lsd='ls -ld *(-/DN)'
 alias lsa='ls -ld .*'
+alias tmux='tmux -2 '
 
 alias wget="wget --timeout 10"
 alias grep="grep --color=auto"
 
-alias pacman="clyde"
+alias pacman="yaourt"
 
 alias ll='ls -ahl --color | more; echo "\e[1;32m --[\e[1;34m Dirs:\e[1;36m `ls -al | egrep \"^drw\" | wc -l` \e[1;32m|\e[1;35m Files: \e[1;31m`ls -al | egrep -v \"^drw\" | grep -v total | wc -l` \e[1;32m]--"'
 

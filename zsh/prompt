@@ -7,11 +7,6 @@ function get_propmpt() {
 
 function get_rprompt() {
     local rprompt="${GRAY}(%~)  [%T]${NO_COLOR}"
-    if [[ -f .git/HEAD ]]
-    then
-        # a git repository
-        rprompt="${GREEN}git:${RED}`git branch | sed -ne 's/^\* \(\S\+\)/\1/p'` $rprompt"
-    fi
     echo $rprompt
 }
 

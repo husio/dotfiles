@@ -1,5 +1,6 @@
 #!/bin/bash
 
+
 xkbcomp $HOME/.Xkb $DISPLAY &> /dev/null
 xmodmap ~/.xmodmap &
 xset r rate 250 35 &
