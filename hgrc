@@ -1,0 +1,24 @@
+[ui]
+username = Piotr Husiatyński <phusiatynski@gmail.com>
+ssh = ssh -C
+
+[defaults]
+# suppress noisy extdiff header message
+cdiff = -q
+
+[extdiff]
+cmd.cdiff = colordiff
+opts.cdiff = -uprN
+
+[pager]
+pager = LESS='FSRX' less
+
+[extensions]
+pager =
+rebase =
+hgext.extdiff =
+progress =
+color =
+
+[alias]
+blame = annotate --user --number

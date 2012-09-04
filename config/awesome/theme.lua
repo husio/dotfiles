@@ -4,15 +4,16 @@
 
 theme = {}
 
-theme.font          = "terminus 8"
+theme.font          = "progsole 6"
 
-theme.bg_normal     = "#222222"
-theme.bg_focus      = "#222222"
+--theme.bg_normal     = "#222222"
+theme.bg_normal     = "#000000"
+theme.bg_focus      = "#000000"
 theme.bg_urgent     = "#ff0000"
 theme.bg_minimize   = "#444444"
 
 theme.fg_normal     = "#aaaaaa"
-theme.fg_focus      = "#5F9FD6"
+theme.fg_focus      = "#10a5c6"
 theme.fg_urgent     = "#ffffff"
 theme.fg_minimize   = "#ffffff"
 theme.fg_separator  = "#747474"
@@ -20,8 +21,8 @@ theme.fg_widget_message = "#DCE0EA"
 theme.fg_widget_label = "#B9B9B9"
 
 theme.border_width  = "1"
-theme.border_normal = "#313131"
-theme.border_focus  = "#94D339"
+theme.border_normal = "#444444"
+theme.border_focus  = "#10a5c6"
 theme.border_marked = "#BA0000"
 
 -- There are other variable sets
@@ -97,4 +98,3 @@ theme.layout_dwindle = "/usr/share/awesome/themes/default/layouts/dwindlew.png"
 theme.awesome_icon = "/usr/share/awesome/icons/awesome16.png"
 
 return theme
--- vim: filetype=lua:expandtab:shiftwidth=4:tabstop=8:softtabstop=4:encoding=utf-8:textwidth=80

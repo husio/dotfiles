@@ -1,13 +1,18 @@
-Xft*dpi:	    100
-Xft*antialias:	true
-Xft.hinting:    hintfull
-#Xft.hintstyle:  5
-Xft*lcdfilter:  5
-Xft*minspace:   true
+Xft.antialias:	true
+Xft.hinting:    true
+Xft.hintstyle:  hintfull
+Xft.rgba:       rgb
 
-# {{{ ncmpc 
-ncmpc*faceName:    profont
-ncmpc*faceSize:    8
+*faceName:    Terminus
+*background:  #000000
+*foreground:  #F7F7F7
+*cursorColor: #cdc092
+*faceSize:         8
+
+
+# {{{ ncmpc
+ncmpc*faceName:    dina
+ncmpc*faceSize:    6
 ncmpc*background:  #1D1D1D
 ncmpc*foreground:  #E2E2E2
 ncmpc*cursorColor: #000000
@@ -31,37 +36,38 @@ ncmpc*color15:     #B8D7EC
 # }}}
 
 # {{{ xterm
-XTerm*italicULMode:     true
-XTerm*boldMode:         false
-XTerm*colorULMode:      true
-#XTerm*faceName:         profont
-XTerm*faceName:         Terminus
-#XTerm*faceName:         Mono
-#XTerm*faceName:         Fixed
-#XTerm*faceName:         iconsolata
-XTerm*faceSize:         8
-XTerm*termName:         xterm-color
+ XTerm*background:                       #000000
+ XTerm*foreground:                       grey75
+ XTerm*cursorColor:                      darkorange1
+ XTerm*scrollBar:                        false
+ XTterm*utf8:                            2
+ XTerm*termName:                         xterm-256color
+!XTerm*faceName:                         xft:Dejavu Sans Mono:pixelsize=11.5
+ XTerm.VT100.geometry:                   89x29
+ XTerm*saveLines:                        7777
+ XTerm*highlightSelection:               true
+ XTerm*trimSelection:                    true
+ XTerm*cutNewline:                       false
+ XTerm*colorBDMode:                      true
+ XTerm*colorBD:                          khaki
+ XTerm*charClass: 3:48,35:48,37:48,43:48,45-47:48,64:48,95:48,126:48,35:48,58:48,63:48,61:48,44:48,38:48,59:48
 
-*background:  #000000
-*foreground:  #F7F7F7
-*cursorColor: #cdc092
-
-XTerm*color0:               #353535
-XTerm*color8:               #666666
-XTerm*color1:               #D81860
-XTerm*color9:               #F00060
-XTerm*color2:               #B7CE42
-XTerm*color10:              #BDE077
-XTerm*color3:               #FEA63C
-XTerm*color11:              #FFE863
-XTerm*color4:               #6F99B4
-XTerm*color12:              #7C96B0
-XTerm*color5:               #8B7B8B
-XTerm*color13:              #D8BFD8
-XTerm*color6:               #A7A15E
-XTerm*color14:              #F0E68C
-XTerm*color7:               #DDDDDD
-XTerm*color15:              #FFFFFF
+ XTerm*color0:                           #171717
+ XTerm*color8:                           #737373
+ XTerm*color1:                           #FF5E5E
+ XTerm*color9:                           #FF7878
+ XTerm*color2:                           #9CE82B
+ XTerm*color10:                          #9ACD32
+ XTerm*color3:                           #F0E68C
+ XTerm*color11:                          #EEE8AA
+ XTerm*color4:                           #008AFF
+ XTerm*color12:                          #4F98FF
+ XTerm*color5:                           #E88CFF
+ XTerm*color13:                          #EDA6FF
+ XTerm*color6:                           #87CEFA
+ XTerm*color14:                          #B0E2FF
+ XTerm*color7:                           #DCDCCC
+ XTerm*color15:                          #FFFFFF
 # }}}
 
 xscreensaver.splash: false
