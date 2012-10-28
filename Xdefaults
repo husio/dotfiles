@@ -1,73 +1,42 @@
-Xft.antialias:	true
-Xft.hinting:    true
-Xft.hintstyle:  hintfull
-Xft.rgba:       rgb
+Xft.antialias:   true
+Xft.hinting:     true
+Xft.hintstyle:   hintfull
+Xft.rgba:        rgb
 
-*faceName:    Terminus
-*background:  #000000
-*foreground:  #F7F7F7
-*cursorColor: #cdc092
-*faceSize:         8
+*cursorBlink:    false
+*scrollBar:      false
+*termName:       xterm-256color
+*faceName:       GohuFont
+*faceSize:       8
+*background:     #000000
+*foreground:     #ffffff
+*cursorColor:    #07A5FF
+*visualBell:     false
+*hideScrollbar:  true
+*hideTabbar:     true
+*hideButton:     true
+*hideMenubar:    true
 
-
-# {{{ ncmpc
-ncmpc*faceName:    dina
-ncmpc*faceSize:    6
-ncmpc*background:  #1D1D1D
-ncmpc*foreground:  #E2E2E2
-ncmpc*cursorColor: #000000
-
-ncmpc*color0:      #000000
-ncmpc*color1:      #A01515
-ncmpc*color2:      #86BE51
-ncmpc*color3:      #98AF00
-ncmpc*color4:      #4C8DB1
-ncmpc*color5:      #A6397A
-ncmpc*color6:      #6B429F
-ncmpc*color7:      #E9E9E9
-ncmpc*color8:      #3A3A3A
-ncmpc*color9:      #C4362D
-ncmpc*color10:     #75BE51
-ncmpc*color11:     #C5DC1D
-ncmpc*color12:     #609AC0
-ncmpc*color13:     #8963B9
-ncmpc*color14:     #70ACAB
-ncmpc*color15:     #B8D7EC
-# }}}
-
-# {{{ xterm
- XTerm*background:                       #000000
- XTerm*foreground:                       grey75
- XTerm*cursorColor:                      darkorange1
- XTerm*scrollBar:                        false
- XTterm*utf8:                            2
- XTerm*termName:                         xterm-256color
-!XTerm*faceName:                         xft:Dejavu Sans Mono:pixelsize=11.5
- XTerm.VT100.geometry:                   89x29
- XTerm*saveLines:                        7777
- XTerm*highlightSelection:               true
- XTerm*trimSelection:                    true
- XTerm*cutNewline:                       false
- XTerm*colorBDMode:                      true
- XTerm*colorBD:                          khaki
- XTerm*charClass: 3:48,35:48,37:48,43:48,45-47:48,64:48,95:48,126:48,35:48,58:48,63:48,61:48,44:48,38:48,59:48
-
- XTerm*color0:                           #171717
- XTerm*color8:                           #737373
- XTerm*color1:                           #FF5E5E
- XTerm*color9:                           #FF7878
- XTerm*color2:                           #9CE82B
- XTerm*color10:                          #9ACD32
- XTerm*color3:                           #F0E68C
- XTerm*color11:                          #EEE8AA
- XTerm*color4:                           #008AFF
- XTerm*color12:                          #4F98FF
- XTerm*color5:                           #E88CFF
- XTerm*color13:                          #EDA6FF
- XTerm*color6:                           #87CEFA
- XTerm*color14:                          #B0E2FF
- XTerm*color7:                           #DCDCCC
- XTerm*color15:                          #FFFFFF
-# }}}
-
-xscreensaver.splash: false
+*color0:                #073642
+*color8:                #353535
+!! red dark/light
+*color1:                #dc322f
+*color9:                #cb4b16
+!! green dark/light
+*color2:                #859900
+*color10:               #586e75
+!! yellow dark/light
+*color3:                #b58900
+*color11:               #657b83
+!! blue dark/light
+*color4:                #268bd2
+*color12:               #839496
+!! magenta dark/light
+*color5:                #d33682
+*color13:               #6c71c4
+!! cyan dark/light
+*color6:                #2aa198
+*color14:               #93a1a1
+!! white dark/light
+*color7:                #eee8d5
+*color15:               #fdf6e3
