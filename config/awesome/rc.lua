@@ -24,7 +24,6 @@ spawn_cmd = {
     ["elinks"] = function() awful.util.spawn_with_shell(terminal .. " -e elinks") end,
     ["backlight"] = function(cmd) system('sudo macbook-backlight ' .. cmd) end,
     ["toggle_monitor"] = function(cmd) system('xrandr --output LVDS1 --auto --output VGA1 --auto --right-of LVDS1 && killall xcompmgr') end,
-    ["screen"] = function() system(terminal .. " screen -drU") end,
     ["screen_rotate"] = function() system("$HOME/.bin/screen_rotate") end,
     ["web_browser"] = function() awful.util.spawn_with_shell("luakit") end,
     ["reload_wallpaper"] = function() awful.util.spawn("sh $HOME/.bin/random_wallpaper.sh $HOME/.wallpapers/simpledesktop") end,
@@ -330,14 +329,13 @@ globalkeys = awful.util.table.join(
     awful.key({ modkey,"Shift"    }, "n",     spawn_cmd["ncmpcpp"]),
     awful.key({ modkey            }, "m",     spawn_cmd["mail"]),
     awful.key({ modkey            }, "v",     spawn_cmd["mail-list"]),
-    awful.key({ modkey            }, "s",     spawn_cmd["screen"]),
     awful.key({ modkey,           }, "w",     spawn_cmd["web_browser"]),
     awful.key({ modkey            }, "c",     function () spawn_cmd["terminal"]("mc") end),
     awful.key({ modkey            }, "r",     spawn_cmd["rss"]),
     awful.key({ modkey            }, "\\",    spawn_cmd["toggle_monitor"]),
     awful.key({ modkey, "Shift"   }, "c",     function () awful.util.spawn("/home/piotrek/.scripts/color-chooser.py") end),
 
-    awful.key({ "Control", "Mod1" }, "Return", function () spawn_cmd["terminal"]("ssh dark -t 'screen -drU'") end),
+    awful.key({ "Control", "Mod1" }, "Return", function () spawn_cmd["terminal"]("ssh dark -t 'tmux attach'") end),
     awful.key({ modkey,   "Shift" }, "Return", function () spawn_cmd["terminal"]("ssh 192.168.0.1") end),
 
     awful.key({ modkey            }, "Delete",    spawn_cmd["screen_rotate"]),
@@ -367,7 +365,7 @@ globalkeys = awful.util.table.join(
 )
 
 clientkeys = awful.util.table.join(
-    --awful.key({ modkey,           }, "f",      function (c) c.fullscreen = not c.fullscreen  end),
+    awful.key({ modkey,           }, "f",      function (c) c.fullscreen = not c.fullscreen  end),
     awful.key({ modkey,           }, "q",      function (c) c:kill()                         end),
     awful.key({ modkey, "Control" }, "space",  awful.client.floating.toggle                     ),
     awful.key({ modkey, "Control" }, "Return", function (c) c:swap(awful.client.getmaster()) end),
