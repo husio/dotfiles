@@ -4,7 +4,9 @@
 
 theme = {}
 
-theme.font          = "progsole 6"
+--theme.font          = "fixed 5"
+theme.font          = "fixed 5"
+
 
 --theme.bg_normal     = "#222222"
 theme.bg_normal     = "#000000"

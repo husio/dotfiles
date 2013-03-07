@@ -1,21 +1,32 @@
+#!/bin/bash
+
+
+ENV_FILE=$HOME/.Xdbus
+
+touch $ENV_FILE
+chmod 600 $ENV_FILE
+env | grep -E '(DBUS_SESSION_BUS_ADDRESS|XAUTHORITY|DISPLAY)' > $ENV_FILE
+gnome-keyring-daemon --start >> $ENV_FILE
+
+
+
 function delay {
     sleep $1
     shift 1
-    DBUS_SESSION_BUS_ADDRESS=`cat $HOME/.dbus_session_bus_address` $@
+    source $ENV_FILE
+    $@
 }
 
 function network_dependent {
     sleep $1
     shift 1
     ping -c2 google.com
-
     if [[ $? -eq 0 ]]
     then
-        DBUS_SESSION_BUS_ADDRESS=`cat $HOME/.dbus_session_bus_address` $@
+        source $ENV_FILE
+        $@
     fi
 }
-
-echo $DBUS_SESSION_BUS_ADDRESS > $HOME/.dbus_session_bus_address
 
 
 xset m 5 1
@@ -23,16 +34,16 @@ xset r rate 250 35
 xset -b
 setxkbmap -option caps:escape
 setxkbmap pl
-gnome-keyring-daemon --daemonize --login &
 
 
 nm-applet --sm-disable &
-#delay 1 blueman-applet &
-#delay 2 thunar --daemon &
-network_dependent 10 gajim &
-network_dependent 10 skype &
+delay 2 thunar --daemon &
+#feh --bg-center ~/.wallpaper.png &
+feh --bg-scale ~/.wallpaper.png &
 
-feh --bg-scale ~/.wallpaper.jpg
+network_dependent 15 gajim &
 
+
+#exec awesome --no-argb
 exec awesome
 exit
