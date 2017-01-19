@@ -19,19 +19,22 @@ set $alt Mod1
 # clear in small sizes. However, if you need a lot of unicode glyphs or
 # right-to-left text rendering, you should instead use pango for rendering and
 # chose a FreeType font, such as:
-font pango:Fixed 8
+#font pango:Anonymous Pro 8
+font pango:xos4 Terminus 14
 
 # Use Mouse+$mod to drag floating windows to their wanted position
 floating_modifier $mod
 
 # start a terminal
-bindsym $mod+Return exec i3-sensible-terminal
+bindsym $mod+Return exec xterm
 
 # kill focused window
 bindsym $mod+q kill
 
 # start dmenu (a program launcher)
-bindsym $mod+d exec dmenu_run
+#bindsym $mod+d exec dmenu_run
+ bindsym $mod+d exec --no-startup-id i3-dmenu-desktop --dmenu "dmenu -i -fn 'xos4 Terminus:pixelsize=18'"
+
 # There also is the (new) i3-dmenu-desktop which only displays applications
 # shipping a .desktop file. It is a wrapper around dmenu, so you need that
 # installed.
@@ -100,6 +103,9 @@ bindsym $mod+Shift+8 move container to workspace 8
 bindsym $mod+Shift+9 move container to workspace 9
 bindsym $mod+Shift+0 move container to workspace 10
 
+# move between screens
+bindsym $mod+Shift+x move workspace to output left
+
 new_window 1pixel
 
 bindsym $mod+Shift+c reload
@@ -129,35 +135,41 @@ bindsym $mod+r mode "resize"
 
 bar {
         position top
-		#status_command ~/.bin/sysinfoclient -fifo=/tmp/sysinfoclient.fifo.in
-		status_command i3status | ~/.bin/i3extendedstatus -mailbox /home/piotrek_new/.Mail
+        mode hide
+	status_command i3status
+	font pango:xos4 Terminus 14, Icons 16
 }
 
-bindsym $mod+n                 exec "xterm -fs 8 -class 'ncmpc' -geometry 62x57+580+19 -bw 0 -e ncmpc"
-bindsym $mod+m                 exec "xterm -e mutt -F ~/.mutt/muttrc.all.mailboxes -f ~/.Mail/phusiatynski/inbox && ~/.bin/check_mailboxes.sh"
-bindsym $mod+w                 exec "luakit"
-bindsym $mod+c                 exec "$HOME/.bin/colorselector"
-
-bindsym $alt+Control+Return    exec "xterm -e 'ssh oceanic.wsisiz.edu.pl -t screen -drU'"
+bindsym $mod+n                 exec "xterm -fs 8 -class 'ncmpc' -geometry 62x57+920+19 -bw 0 -e ncmpc"
+bindsym $mod+w                 exec "firefox"
+bindsym $mod+c                 exec "gcolor2"
 
 bindsym $mod+F8                exec "$HOME/.bin/screenswitch"
+bindsym $mod+F9                exec "$HOME/.bin/setup_screen"
+
 bindsym $mod+F11               exec "amixer -c 0 set Master 5dB- && killall -USR1 i3status"
 bindsym $mod+F12               exec "amixer -c 0 set Master 5dB+ && killall -USR1 i3status"
-
 bindsym XF86AudioLowerVolume   exec "amixer -c 0 set Master 5dB- && killall -USR1 i3status"
 bindsym XF86AudioRaiseVolume   exec "amixer -c 0 set Master 5dB+ && killall -USR1 i3status"
 bindsym XF86AudioMute          exec "amixer -c 0 set Master toggle"
 bindsym XF86AudioPlay          exec "mpc toggle"
 bindsym XF86AudioStop          exec "mpc toggle"
+bindsym $mod+slash             exec "mpc toggle"
 bindsym XF86AudioNext          exec "mpc next"
+bindsym $mod+period            exec "mpc next"
 bindsym XF86AudioPrev          exec "mpc prev"
+bindsym $mod+comma             exec "mpc prev"
 #bindsym XF86MonBrightnessUp
 #bindsym XF86MonBrightnessDown
+#bindsym XF86AudioMicMute
+bindsym XF86ScreenSaver        exec "i3lock -c 000000"
+bindsym XF86Display            exec "xrandr --auto"
+#bindsym Shift+XF86Launch1      exec "sudo /usr/bin/poweroff"
+bindsym Shift+XF86Launch1      exec "/usr/bin/dbus-send --system --print-reply --dest='org.freedesktop.ConsoleKit' '/org/freedesktop/ConsoleKit/Manager' 'org.freedesktop.ConsoleKit.Manager.Stop'"
+
+bindsym $mod+x move workspace to output up
 
 for_window [class="ncmpc"] floating enable
-for_window [class="Gajim"] floating enable
-for_window [class="Skype"] floating enable
 for_window [class="mplayer"] floating enable
-for_window [class="game"] floating enable
-for_window [class="VirtualBox"] floating enable
-for_window [class="Hipchat"] floating enable
+for_window [class="mpv"] floating enable
+for_window [class="Telegram"] floating enable

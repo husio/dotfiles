@@ -1,49 +1,23 @@
 #!/bin/bash
 
+# run ssh agent
+eval $(ssh-agent -s)
+eval $(/usr/bin/gnome-keyring-daemon --start --components=pkcs11,secrets,ssh)
+export SSH_AUTH_SOCK
 
-ENV_FILE=$HOME/.Xdbus
+#eval $(/usr/bin/gnome-keyring-daemon --start --components=pkcs11,secrets,ssh)
 
-touch $ENV_FILE
-chmod 600 $ENV_FILE
-env | grep -E '(DBUS_SESSION_BUS_ADDRESS|XAUTHORITY|DISPLAY)' > $ENV_FILE
-gnome-keyring-daemon --start >> $ENV_FILE
+feh --bg-center .wallpaper.png
 
+/home/piotr/.bin/setup_keyboard
+/home/piotr/.bin/setup_screen
 
+nm-applet &
 
-function delay {
-    sleep $1
-    shift 1
-    source $ENV_FILE
-    $@
-}
+~/.TelegramDesktop/Telegram -startintray &
 
-function network_dependent {
-    sleep $1
-    shift 1
-    ping -c2 google.com
-    if [[ $? -eq 0 ]]
-    then
-        source $ENV_FILE
-        $@
-    fi
-}
+#start-pulseaudio-x11 &
 
-
-xset m 5 1
-xset r rate 250 35
-xset -b
-setxkbmap -option caps:escape
-setxkbmap pl
-
-
-nm-applet --sm-disable &
-delay 2 thunar --daemon &
-#feh --bg-center ~/.wallpaper.png &
-feh --bg-scale ~/.wallpaper.png &
-
-network_dependent 15 gajim &
-
-
-#exec awesome --no-argb
-exec awesome
+exec ck-launch-session dbus-launch i3
+clear
 exit

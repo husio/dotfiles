@@ -3,10 +3,16 @@ Xft.hinting:     true
 Xft.hintstyle:   hintfull
 Xft.rgba:        rgb
 
+!Xcursor.theme: xcursor-neutral
+!Xcursor.size:  16
+
 *cursorBlink:    false
 *scrollBar:      false
-!*termName:       xterm-256color
-*faceName:       GohuFont
+!*termName:       screen-256color
+!*faceName:       GohuFont
+!*faceName:       xos4 Terminus
+*faceName:       Misc Termsynu
+!*faceName:    Terminess Powerline
 *faceSize:       8
 *background:     #000000
 *foreground:     #ffffff
@@ -16,9 +22,11 @@ Xft.rgba:        rgb
 *hideTabbar:     true
 *hideButton:     true
 *hideMenubar:    true
+*meta8:          true
 
-!*color0:                #073642
-!*color8:                #353535
+
+*color0:                #073642
+*color8:                #353535
 !!! red dark/light
 !*color1:                #dc322f
 !*color9:                #cb4b16
