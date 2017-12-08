@@ -1,0 +1,36 @@
+#!/bin/bash
+
+
+
+if [ $# -eq 0 ]
+then
+    echo "Wybierz stacje:"
+    read name
+else
+    name=$1
+fi
+
+case $name in
+    "tokfm" ) address=http://olsztyn.radio.pionier.net.pl:8000/z/radiotok4.ogg;;
+    "rmffm" ) address=http://91.121.125.91:8002/;;
+    "jedynka" ) address="mms://address.polskieradio.pl/program1";;
+    "dwojka" ) address="mms://address.polskieradio.pl/program2";;
+    "rmfclassic" ) address="http://195.150.20.4:8000/rmf_classic";;
+    #"trojka" ) address="mms://address.polskieradio.pl/program3";;
+    "trojka") address="http://mp3.polskieradio.pl:8904/;.mp3";;
+    "euro" ) address="mms://address.polskieradio.pl/program4";;
+    "anty" ) address="http://213.251.138.121:7000/";;
+    "baobab" ) address="http://address.radiobaobab.pl:8000/radiobaobab.ogg";;
+    "solar") address="http://icy-e-01.sharp-address.com:80/solar32.mp3";;
+    "bbc4") address="http://bbcmedia.ic.llnwd.net/address/bbcmedia_intl_lc_radio4_p";;
+    "jazzfm") address="http://listen.onmyradio.net:8002/";;
+    "bbcscotland") address="http://212.58.252.34:80/wms/nations/scotland?MSWMExt=.asf";;
+    "celtic") address="http://address.celticmusicradio.net:8000/celticmusic.mp3";;
+    * ) echo "Czego ty chcesz sluchac? Niema takiej stacji w mojej bazie";;
+esac
+
+echo "Playing $name ==> ${address}"
+
+mpv "${address}"  >/dev/null 2>&1
+
+exit

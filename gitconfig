@@ -1,9 +1,19 @@
 [user]
 	email = phusiatynski@gmail.com
 	name = Piotr Husiatyński
+	signingkey = CF61312685FCEA8B
 [color]
 	diff = true
 [core]
 	editor = vim
 [merge]
 	tool = vimdiff
+	conflictstyle = diff3
+[url "git@github.com:"]
+	insteadOf = https://github.com/
+[format]
+	#pretty = format:%C(yellow)%h %Creset%>(12)%ar %Cgreen%<(18)%aN%Cred%d %Creset%s
+[commit]
+	#gpgsign = true
+[credential]
+	helper = /usr/lib/git-core/git-credential-gnome-keyring

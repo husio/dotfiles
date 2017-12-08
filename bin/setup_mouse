@@ -1,0 +1,9 @@
+#!/bin/sh
+
+echo 'power on' | bluetoothctl
+sleep 2
+echo '
+pair DC:2C:26:A2:1C:C2
+trust DC:2C:26:A2:1C:C2
+connect DC:2C:26:A2:1C:C2
+' | bluetoothctl
