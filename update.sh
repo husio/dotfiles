@@ -1,5 +1,6 @@
 #!/bin/sh
 
+set -x
 
 REPO=`pwd`
 

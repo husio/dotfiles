@@ -1,19 +1,14 @@
 export PATH=$HOME/.bin:$PATH:$HOME/.heroku-client/bin/:$HOME/projects/goroot/bin
 
 
-# OPINARY specific
-if [ -f /tmp/opinary ]
-then
-	. /home/piotr/projects/opinary/environment
-fi
-
-
 export HISTSIZE=2000
 export SAVEHIST=2000
 export PAGER=less
 export EDITOR=vim
 export VISUAL=$EDITOR
 export PYTHONSTARTUP=$HOME/.pythonrc
+export GOPATH=$HOME/projects/.go
+export GOBIN=$HOME/.bin/
 
 # Turn the prompt system off:
 prompt off

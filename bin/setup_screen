@@ -12,7 +12,7 @@ else
 	--output VGA1 \
 	    --off \
         --output LVDS1 \
-            --mode $(xrandr | grep LVDS1 -A 1 | tail -n 1 | awk -e '{print $1}')
+            --mode $(xrandr | grep LVDS -A 1 | tail -n 1 | awk -e '{print $1}')
 fi
 
 

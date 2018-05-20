@@ -2,22 +2,15 @@
 
 # run ssh agent
 eval $(ssh-agent -s)
-eval $(/usr/bin/gnome-keyring-daemon --start --components=pkcs11,secrets,ssh)
+# ssh-add  $HOME/.ssh/id_rsa
 export SSH_AUTH_SOCK
 
-#eval $(/usr/bin/gnome-keyring-daemon --start --components=pkcs11,secrets,ssh)
+/home/piotr/.bin/setup_screen
+/home/piotr/.bin/setup_keyboard
 
 feh --bg-center .wallpaper.png
 
-/home/piotr/.bin/setup_keyboard
-/home/piotr/.bin/setup_screen
+telegram-desktop -startintray &
 
-nm-applet &
-
-~/.TelegramDesktop/Telegram -startintray &
-
-#start-pulseaudio-x11 &
-
-exec ck-launch-session dbus-launch i3
 clear
-exit
+exec i3
