@@ -26,7 +26,7 @@ font pango terminus 14
 floating_modifier $mod
 
 # start a terminal
-bindsym $mod+Return exec st -f terminus
+bindsym $mod+Return exec xterm
 
 # kill focused window
 bindsym $mod+q kill
@@ -142,41 +142,40 @@ bar {
 	font pango:terminus 14, Icons 16
 }
 
-bindsym $mod+n                 exec "st -f 'Terminus:pixelsize=12' -c 'ncmpc' -T ncmpc -g '62x57+920+19' -e ncmpc"
-bindsym $mod+y                 exec "st -f 'Terminus:pixelsize=12' -c 'mpsyt' -T mps-youtube -g '72x57+920+19' -e mpsyt"
-bindsym $mod+w                 exec "apulse firefox"
+bindsym $mod+n                 exec "xterm -class ncmpc -T ncmpc -g '62x64+1400+19' -e ncmpc"
+bindsym $mod+m                 exec "xterm -c 'mutt' -T mutt -e mutt"
+bindsym $mod+w                 exec "firefox"
 bindsym $mod+c                 exec "gcolor2"
 
-bindsym $mod+F5                exec "sudo zzz"
-bindsym $mod+F6                exec "i3lock -c 1B001B"
+bindsym $mod+F5                exec --no-startup-id "sudo zzz"
+bindsym $mod+F6                exec --no-startup-id "i3lock -c 000000 -i /home/piotr/.lockscreen.png"
+bindsym $mod+Print             exec --no-startup-id "i3lock -c 000000 -i /home/piotr/.lockscreen.png"
 
-bindsym $mod+F8                exec "$HOME/.bin/screenswitch"
-bindsym $mod+F9                exec "$HOME/.bin/setup_screen"
+bindsym $mod+F8                exec --no-startup-id "$HOME/.bin/screenswitch"
+bindsym $mod+F9                exec --no-startup-id "$HOME/.bin/setup_screen"
+bindsym $mod+s                 exec --no-startup-id "xterm -e pulsemixer"
 
-bindsym $mod+F11               exec "amixer -c 0 set Master 5dB- && pkill -USR1 i3status"
-bindsym $mod+F12               exec "amixer -c 0 set Master 5dB+ && pkill -USR1 i3status"
-bindsym XF86AudioLowerVolume   exec "amixer -c 0 set Master 5dB- && pkill -USR1 i3status"
-bindsym XF86AudioRaiseVolume   exec "amixer -c 0 set Master 5dB+ && pkill -USR1 i3status"
-bindsym XF86AudioMute          exec "amixer -c 0 set Master toggle"
-bindsym XF86AudioPlay          exec "mpc toggle"
-bindsym XF86AudioStop          exec "mpc toggle"
-bindsym $mod+slash             exec "mpc toggle"
-bindsym XF86AudioNext          exec "mpc next"
-bindsym $mod+period            exec "mpc next"
-bindsym XF86AudioPrev          exec "mpc prev"
-bindsym $mod+comma             exec "mpc prev"
+bindsym $mod+F11               exec --no-startup-id "pactl set-sink-volume 0 -10% && pkill -USR1 i3status"
+bindsym $mod+F12               exec --no-startup-id "pactl set-sink-volume 0 +10%  && pkill -USR1 i3status"
+bindsym XF86AudioLowerVolume   exec --no-startup-id "pactl set-sink-volume 0 -10%  && pkill -USR1 i3status"
+bindsym XF86AudioRaiseVolume   exec --no-startup-id "pactl set-sink-volume 0 +10%  && pkill -USR1 i3status"
+bindsym XF86AudioMute          exec --no-startup-id "pactl set-sink-mute 0 toggle"
+bindsym XF86AudioPlay          exec --no-startup-id "mpc toggle"
+bindsym XF86AudioStop          exec --no-startup-id "mpc toggle"
+bindsym $mod+slash             exec --no-startup-id "mpc toggle"
+bindsym XF86AudioNext          exec --no-startup-id "mpc next"
+bindsym $mod+period            exec --no-startup-id "mpc next"
+bindsym XF86AudioPrev          exec --no-startup-id "mpc prev"
+bindsym $mod+comma             exec --no-startup-id "mpc prev"
 #bindsym XF86MonBrightnessUp
 #bindsym XF86MonBrightnessDown
 #bindsym XF86AudioMicMute
-bindsym XF86ScreenSaver        exec "i3lock -c 1B001B"
-bindsym XF86Calculator         exec "i3lock -c 1B001B"
-bindsym XF86Display            exec "xrandr --auto"
-#bindsym Shift+XF86Launch1      exec "sudo /usr/bin/poweroff"
-bindsym Shift+XF86Launch1      exec "/usr/bin/dbus-send --system --print-reply --dest='org.freedesktop.ConsoleKit' '/org/freedesktop/ConsoleKit/Manager' 'org.freedesktop.ConsoleKit.Manager.Stop'"
+bindsym XF86Display            exec --no-startup-id "sh /home/piotr/.bin/setup_screen"
+bindsym $mod+Shift+Delete      exec "sudo /usr/bin/poweroff"
 
 bindsym $mod+x move workspace to output up
 
 for_window [class="ncmpc"] floating enable
-for_window [class="mpsyt"] floating enable
 for_window [class="mpv"] floating enable
 for_window [class="Telegram"] floating enable
+for_window [class="gimp"] floating enable

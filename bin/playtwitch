@@ -1,0 +1,25 @@
+#!/bin/sh
+
+
+streams='grimreaper_eu
+gamesdonequick
+hupsaiya
+neuro
+harstem
+rotterdam08
+maynarde
+wardiii
+Livibee
+FlorencioSC
+probe_sc2
+mcanning
+PartinGtheBigBoy'
+
+streamname=$( echo "$streams" | dmenu -l 40 -i )
+
+TWITCH_CLIENT_ID=kimne78kx3ncx6brgo4mv6wki5h1ko \
+streamlink \
+	-p mpv \
+	"https://www.twitch.tv/$streamname" \
+	best
+

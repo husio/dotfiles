@@ -1,6 +1,7 @@
 [user]
 	email = phusiatynski@gmail.com
 	name = Piotr Husiatyński
+	signingkey = CF61312685FCEA8B
 [color]
 	diff = true
 [core]

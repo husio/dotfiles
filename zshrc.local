@@ -1,25 +1,20 @@
-export PATH=$HOME/.bin:$PATH:$HOME/.heroku-client/bin/:$HOME/projects/goroot/bin
+bindkey -v
 
+export PATH=$HOME/.bin:$PATH
 
-export HISTSIZE=2000
-export SAVEHIST=2000
+export HISTSIZE=5000
+export SAVEHIST=5000
 export PAGER=less
-export EDITOR=vim
-export VISUAL=$EDITOR
-export PYTHONSTARTUP=$HOME/.pythonrc
-export GOPATH=$HOME/projects/.go
-export GOBIN=$HOME/.bin/
+export GOBIN=$HOME/.bin
 
-# Turn the prompt system off:
 prompt off
-# Customise the prompt yourself:
-export PS1="%F{244}%c %F{114}$ %F{254}"
 
+alias vim=vim-huge
+alias tmux="tmux -2"
 
-alias tmux="tmux -2 "
-
-alias wget="wget --timeout 10"
 alias grep="grep --color=auto"
+
+
 
 if [ -n "$VIRTUAL_ENV" ]; then
     . "$VIRTUAL_ENV/bin/activate"
@@ -40,3 +35,4 @@ fi
 if [ $commands[kubectl] ]; then
 	source <(kubectl completion zsh)
 fi
+

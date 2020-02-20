@@ -1,22 +1,41 @@
-#!/bin/bash
-
-if [[ `xrandr | grep VGA1  | wc -l` -eq 1 ]]
-then
-    xrandr \
-        --output VGA1 \
-            --mode $(xrandr | grep VGA -A 1 | tail -n 1 | awk -e '{print $1}') \
-	--output LVDS1 \
-	    --off
-else
-    xrandr \
-	--output VGA1 \
-	    --off \
-        --output LVDS1 \
-            --mode $(xrandr | grep LVDS -A 1 | tail -n 1 | awk -e '{print $1}')
-fi
+#!/bin/sh
 
 
 
-/home/piotr/.bin/setup_keyboard
+modes="laptop only\nexternal only\nboth"
+choice=`echo $modes | dmenu -p display`
+
+case  $choice in
+	"laptop only")
+		xrandr \
+			--output eDP --auto \
+			--output HDMI-A-0 --off \
+			--output DisplayPort-0 --off \
+			--output DisplayPort-1 --off
+		;;
+	"external only")
+		external=` xrandr | grep ' connected' | grep -v eDP | cut -d ' ' -f1 `
+		if [ x != x"$external" ]
+		then
+			xrandr \
+				--output $external --auto \
+				--output eDP --off
+		fi
+		;;
+	"both")
+		external=` xrandr | grep ' connected' | grep -v eDP | cut -d ' ' -f1 `
+		if [ x != x"$external" ]
+		then
+			xrandr \
+				--output $external --auto \
+				--output eDP --left-of $external --auto
+		fi
+		;;
+	"*")
+		echo "Unknown choice $choice"
+		exit 2
+		;;
+esac
 
 feh --bg-center ~/.wallpaper.png
+
