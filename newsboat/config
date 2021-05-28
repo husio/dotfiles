@@ -1,0 +1,5 @@
+auto-reload yes
+reload-threads 15
+browser firefox -p home %u
+datetime-format "%d.%m.%Y"
+articlelist-format "%D  %?T?|%-17T| ?%t"

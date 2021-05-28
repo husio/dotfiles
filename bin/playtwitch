@@ -1,7 +1,7 @@
 #!/bin/sh
 
-
-streams='grimreaper_eu
+streams='grimmy_uk
+skoocho
 gamesdonequick
 hupsaiya
 neuro
@@ -13,13 +13,22 @@ Livibee
 FlorencioSC
 probe_sc2
 mcanning
-PartinGtheBigBoy'
+PartinGtheBigBoy
+esl_sc2
+ninasc2
+quasarprintf
+coconutgamezz
+HeroMarine
+x5_PiG
+booooooooooooooooooom
+DeMusliM
+rb_reynor
+'
 
-streamname=$( echo "$streams" | dmenu -l 40 -i )
+streamname=$(echo "$streams" | dmenu -l 40 -i)
 
 TWITCH_CLIENT_ID=kimne78kx3ncx6brgo4mv6wki5h1ko \
-streamlink \
-	-p mpv \
-	"https://www.twitch.tv/$streamname" \
-	best
-
+  streamlink \
+  -p mpv \
+  "https://www.twitch.tv/$streamname" \
+  best

@@ -1,5 +1,5 @@
-Xft.antialias:   true
-Xft.hinting:     true
+Xft.antialias:   1
+Xft.hinting:     1
 Xft.hintstyle:   hintfull
 Xft.rgba:        rgb
 
@@ -9,7 +9,7 @@ Xcursor.size:  16
 *cursorBlink:    false
 *scrollBar:      false
 *faceName:       Terminus
-*faceSize:       10
+*faceSize:	14
 *background:     #000000
 *foreground:     #ffffff
 *cursorColor:    #07A5FF

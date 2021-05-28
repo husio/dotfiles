@@ -3,6 +3,7 @@
 
 declare -A stations
 stations+=(
+    [nowyswiat]='https://stream.nowyswiat.online/mp3'
     [tokfm]='http://olsztyn.radio.pionier.net.pl:8000/z/radiotok4.ogg'
     [rmffm]='http://91.121.125.91:8002/'
     [jedynka]='mms://address.polskieradio.pl/program1'

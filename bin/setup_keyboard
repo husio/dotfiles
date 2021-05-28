@@ -3,3 +3,7 @@
 setxkbmap -option caps:escape
 setxkbmap pl
 xset r rate 250 35
+
+# Disable touchpad
+touchpad_id=$(xinput list | grep 'Touchpad' | sed -rn 's/.*id=([0-9]+).*/\1/p')
+xinput set-prop "$touchpad_id" "Device Enabled" 0
