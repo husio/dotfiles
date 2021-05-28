@@ -41,4 +41,4 @@ backup $HOME/.mutt/gpg $REPO/mutt/gpg
 backup $HOME/.mutt/colors $REPO/mutt/colors
 backup $HOME/.mutt/mailcap $REPO/mutt/mailcap
 backup $HOME/.mutt/signature $REPO/mutt/signature
-backup $HOME/.mutt/muttrc.phusiatynski $REPO/.mutt/muttrc.phusiatynski
+backup $HOME/.mutt/muttrc.phusiatynski $REPO/mutt/muttrc.phusiatynski
