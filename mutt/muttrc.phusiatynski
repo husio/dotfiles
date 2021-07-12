@@ -32,7 +32,6 @@ unset confirmappend
 auto_view text/html
 alternative_order text/plain text/enriched text/html
 
-
 set sidebar_visible = no
 set sidebar_component_depth = 0
 set sidebar_format = '%B%?F? [%F]?%* %?N?%N/?%S'

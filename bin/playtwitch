@@ -23,6 +23,7 @@ x5_PiG
 booooooooooooooooooom
 DeMusliM
 rb_reynor
+special_
 '
 
 streamname=$(echo "$streams" | dmenu -l 40 -i)
