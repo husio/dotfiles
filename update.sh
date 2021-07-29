@@ -9,15 +9,17 @@ backup() {
   cp -R "$1" "$2"
 }
 
+backup $HOME/.bin/choose_browser $REPO/bin/choose_browser
+backup $HOME/.bin/loadpass $REPO/bin/loadpas
+backup $HOME/.bin/playclipboard $REPO/bin/playclipboard
+backup $HOME/.bin/playtwitch $REPO/bin/playtwitch
 backup $HOME/.bin/radio $REPO/bin/radio
+backup $HOME/.bin/renderhtml $REPO/bin/renderhtml
 backup $HOME/.bin/setup_keyboard $REPO/bin/setup_keyboard
 backup $HOME/.bin/setup_screen $REPO/bin/setup_screen
+backup $HOME/.bin/twtxtsh $REPO/bin/twtxtsh
 backup $HOME/.bin/up $REPO/bin/up
 backup $HOME/.bin/youtube-download-mp3 $REPO/bin/youtube-download-mp3
-backup $HOME/.bin/playtwitch $REPO/bin/playtwitch
-backup $HOME/.bin/playclipboard $REPO/bin/playclipboard
-backup $HOME/.bin/choose_browser $REPO/bin/choose_browser
-backup $HOME/.bin/twtxtsh $REPO/bin/twtxtsh
 
 backup $HOME/.Xdefaults $REPO/Xdefaults
 backup $HOME/.config/i3/config $REPO/i3/

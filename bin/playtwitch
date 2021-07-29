@@ -24,6 +24,7 @@ booooooooooooooooooom
 DeMusliM
 rb_reynor
 special_
+apoptosis808
 '
 
 streamname=$(echo "$streams" | dmenu -l 40 -i)
