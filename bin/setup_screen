@@ -5,12 +5,12 @@ external_flags=''
 
 if [ "$external" ]; then
   modes="laptop only\nexternal only ($external)\nboth"
-  external_res=$(xrandr | grep DisplayPort-2 -A 1 | tail -n1 | awk '{ print $1 }')
+  external_res=$(xrandr | grep "$external" -A 1 | tail -n1 | awk '{ print $1 }')
   external_flags="--mode $external_res "
-  if [ "$external_res" = "3840x2160" ]; then
-    # rate 30, because using it through usbc does not allow for higher refresh rate
-    external_flags="$external_flags --rate 30 "
-  fi
+  # if [ "$external_res" = "3840x2160" ]; then
+  #   # rate 30, because using it through usbc does not allow for higher refresh rate
+  #   external_flags="$external_flags --rate 30 "
+  # fi
 else
   modes="laptop only"
 fi

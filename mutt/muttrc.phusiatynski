@@ -22,7 +22,8 @@ set reply_regexp = "^(([Rr][Ee]?(\[[0-9]+\])?: *)?(\[[^]]+\] *)?)*"
 set fast_reply=yes
 set include=yes
 set status_chars  = " *%A"
-set status_format = "───[ Folder: %f ]───[%r%m messages%?n? (%n new)?%?d? (%d to delete)?%?t? (%t tagged)? ]───%>─%?p?( %p postponed )?───"
+set status_format = "%f ─── %r%m messages%?n? (%n new)?%?d? (%d to delete)?%?t? (%t tagged)? %>─%?p?( %p postponed )?"
+set index_format="%Z %d %-30.30F %s"
 set delete
 set quit
 
@@ -31,15 +32,6 @@ unset confirmappend
 
 auto_view text/html
 alternative_order text/plain text/enriched text/html
-
-set sidebar_visible = no
-set sidebar_component_depth = 0
-set sidebar_format = '%B%?F? [%F]?%* %?N?%N/?%S'
-set sidebar_sort_method = 'unsorted'
-bind index,pager \Cp sidebar-prev
-bind index,pager \Cn sidebar-next
-bind index,pager \Co sidebar-open
-bind index,pager B sidebar-toggle-visible
 
 set my_gmail_pass = ""
 source "gpg2 -d ~/.mutt/imap.phusiatynski.gmail.secrets.gpg |"
