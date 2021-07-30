@@ -1,0 +1,1 @@
+KERNEL=="hiddev[0-9]*", SUBSYSTEM=="usbmisc", SUBSYSTEMS=="usb", ATTRS{idVendor}=="17ef", ATTRS{idProduct}=="6047", ENV{DISPLAY}=":0", ENV{XAUTHORITY}="/home/piotr/.Xauthority", RUN+="/home/piotr/.bin/setup_keyboard"
