@@ -1,2 +1,0 @@
-#!/bin/sh
-gopass ls --flat | dmenu | xargs --no-run-if-empty gopass show -o | xdotool type --clearmodifiers --file -

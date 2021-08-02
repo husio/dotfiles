@@ -37,7 +37,7 @@ case $choice in
   for screen in $(xrandr | grep connected | grep -v eDP | grep -v $external | awk '{ print $1 }'); do
     off_flags="$off_flags --output $screen --off "
   done
-  xrandr --output $external $external_flags $off_flags --output eDP --below "$external" --auto
+  xrandr --output $external $external_flags $off_flags --output eDP --left-of "$external" --auto
   ;;
 "*")
   echo "Unknown choice $choice"

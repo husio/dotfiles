@@ -10,7 +10,7 @@ backup() {
 }
 
 backup $HOME/.bin/choose_browser $REPO/bin/choose_browser
-backup $HOME/.bin/loadpass $REPO/bin/loadpas
+backup $HOME/.bin/loadpass $REPO/bin/loadpass
 backup $HOME/.bin/playclipboard $REPO/bin/playclipboard
 backup $HOME/.bin/playtwitch $REPO/bin/playtwitch
 backup $HOME/.bin/radio $REPO/bin/radio
