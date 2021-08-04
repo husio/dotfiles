@@ -1,0 +1,31 @@
+#!/bin/sh
+
+set -e
+
+# read is too basic. No editing and no spellcheck.
+# read -p 'tweet: ' entry
+
+entryfile=`mktemp --suffix=_twtxt`
+# https://twtxt.readthedocs.io/en/stable/user/twtxtfile.html#format-specification
+vim \
+	-c 'set statusline=new\ twtxt\ tweet%=characters:\ %o' \
+	-c 'set filetype=twtxt' \
+	-c 'startinsert!' \
+	-c 'set spell' \
+	"$entryfile"
+
+# New line is not allowed. Instead of escaping it, replace with a space.
+entry=`tr '\r\n' ' ' < $entryfile`
+
+rm $entryfile
+
+if [ x"$entry" = "x" ]
+then
+	exit
+fi
+
+now=`date +%FT%T%:z`
+twtxtfile=${TWTXT:-$HOME/.twtxt.txt}
+
+echo "$now\t$entry" >> $twtxtfile
+

@@ -1,0 +1,11 @@
+# encrypting secrets
+
+https://gist.github.com/bnagy/8914f712f689cc01c267
+
+    % gpg -r your.email@example.com -e ~/.mutt/passwords
+    % ls ~/.mutt/passwords*
+    /home/user/.mutt/passwords /home/user/.mutt/passwords.gpg
+    % shred ~/.mutt/passwords
+    % rm ~/.mutt/passwords
+
+

@@ -1,0 +1,9 @@
+#!/bin/sh
+
+uri=$(xclip -o)
+
+[ "x$uri" = x ] && exit 0
+
+notify-send "playing $uri"
+
+mpv "$uri"

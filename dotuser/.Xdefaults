@@ -1,0 +1,25 @@
+Xft.antialias:   1
+Xft.hinting:     1
+Xft.hintstyle:   hintfull
+Xft.rgba:        rgb
+
+Xcursor.theme: Openzone Black Slim
+Xcursor.size:  16
+
+*cursorBlink:    false
+*scrollBar:      false
+*faceName:       Terminus
+*faceSize:	18
+*background:     #000000
+*foreground:     #ffffff
+*cursorColor:    #07A5FF
+*visualBell:     false
+*hideScrollbar:  true
+*hideTabbar:     true
+*hideButton:     true
+*hideMenubar:    true
+*meta8:          true
+
+
+*color0:                #073642
+*color8:                #353535
