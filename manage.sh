@@ -86,7 +86,11 @@ deploy_dotfiles() {
 
     src=${dst#"$HOME"}
     mkdir -p "$dst/$(dirname "$src")"
-    ln -r "$src_root$src" "$dst"
+    # Since collecting is easy, it is better to make a copy than to link and
+    # edit the dotfile as well by a mistake.
+    #
+    #ln -r "$src_root$src" "$dst"
+    cp "$src_root$src" "$dst"
   done <"$1"
 }
 
