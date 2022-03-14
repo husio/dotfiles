@@ -37,6 +37,7 @@ set my_gmail_pass = ""
 source "gpg2 -d ~/.mutt/imap.phusiatynski.gmail.secrets.gpg |"
 set imap_pass = "$my_gmail_pass"
 set smtp_pass = "$my_gmail_pass"
+set smtp_authenticators = 'gssapi:login'
 
 set folder = "imaps://imap.gmail.com:993"
 set from = "phusiatynski@gmail.com"

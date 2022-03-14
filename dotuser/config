@@ -2,7 +2,6 @@ $HOME/.bin/choose_browser
 $HOME/.bin/loadpass
 $HOME/.bin/playclipboard
 $HOME/.bin/playtwitch
-$HOME/.bin/radio
 $HOME/.bin/renderhtml
 $HOME/.bin/setup_keyboard
 $HOME/.bin/setup_screen

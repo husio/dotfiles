@@ -4,12 +4,12 @@ Xft.hintstyle:   hintfull
 Xft.rgba:        rgb
 
 Xcursor.theme: Openzone Black Slim
-Xcursor.size:  16
+Xcursor.size:  12
 
 *cursorBlink:    false
 *scrollBar:      false
 *faceName:       Terminus
-*faceSize:	18
+*faceSize:	 12
 *background:     #000000
 *foreground:     #ffffff
 *cursorColor:    #07A5FF

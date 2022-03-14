@@ -1,6 +1,7 @@
 #!/bin/sh
 
 streams='grimmy_uk
+Nathanias
 skoocho
 gamesdonequick
 hupsaiya
@@ -25,6 +26,8 @@ DeMusliM
 rb_reynor
 special_
 apoptosis808
+FollowGrubby
+ptitdrogo
 '
 
 streamname=$(echo "$streams" | dmenu -l 40 -i)
