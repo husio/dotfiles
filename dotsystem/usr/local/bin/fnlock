@@ -1,4 +1,0 @@
-#!/bin/bash
-
-# Dash (sh) does not support the below operation.
-echo 0 > /sys/bus/hid/devices/*17EF\:604*/fn_lock

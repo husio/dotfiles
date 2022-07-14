@@ -1,7 +1,7 @@
 #!/bin/sh
 
 
-youtube-dl \
+tl-dlp \
 	--extract-audio \
 	--audio-format mp3 \
 	--output "/home/music/youtube/%(title)s-%(id)s.%(ext)s" \

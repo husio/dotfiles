@@ -19,28 +19,19 @@ set $alt Mod1
 # clear in small sizes. However, if you need a lot of unicode glyphs or
 # right-to-left text rendering, you should instead use pango for rendering and
 # chose a FreeType font, such as:
-#font pango:Anonymous Pro 8
-font pango terminus 14
+font pango Hack 22
 
 # Use Mouse+$mod to drag floating windows to their wanted position
 floating_modifier $mod
 
 # start a terminal
-bindsym $mod+Return exec st
+bindsym $mod+Return exec alacritty
 
 # kill focused window
 bindsym $mod+q kill
 
 # start dmenu (a program launcher)
-bindsym $mod+d exec dmenu_run -fn 'terminus:pixelsize=26'
-# bindsym $mod+d exec --no-startup-id i3-dmenu-desktop --dmenu "dmenu -i -fn 'Terminus:pixelsize=18'"
-#bindsym $mod+d exec --no-startup-id i3-dmenu-desktop --dmenu "dmenu_run -i -fn 'terminus:pixelsize=18'"
-
-
-# There also is the (new) i3-dmenu-desktop which only displays applications
-# shipping a .desktop file. It is a wrapper around dmenu, so you need that
-# installed.
-# bindsym $mod+d exec --no-startup-id i3-dmenu-desktop
+bindsym $mod+d exec dmenu_run -fn 'Hack:pixelsize=32'
 
 # change focus
 bindsym $mod+h       focus left
@@ -112,7 +103,6 @@ new_window 1pixel
 
 bindsym $mod+Shift+c reload
 bindsym $mod+Shift+r restart
-bindsym $mod+Shift+e exec "i3-nagbar -t warning -m 'You pressed the exit shortcut. Do you really want to exit i3? This will end your X session.' -b 'Yes, exit i3' 'i3-msg exit'"
 
 mode "resize" {
         bindsym l resize shrink width 10 px or 10 ppt
@@ -139,27 +129,25 @@ bar {
         position top
         mode hide
 	status_command i3status
-	font pango:terminus 16, Icons 18
+	font pango:Hack 28, Icons 28
 }
 
-bindsym $mod+n                 exec " xterm -class ncmpc -fs 18 -T ncmpc -g '64x44+1140+8' -e ncmpc"
-bindsym $mod+m                 exec "xterm -T mutt -fs 18 -e 'TERM=xterm-256color neomutt -F ~/.mutt/muttrc.phusiatynski'"
+bindsym $mod+n                 exec "alacritty --title ncmpc -e ncmpc"
+bindsym $mod+m                 exec "alacritty --title mutt -e neomutt -F ~/.mutt/muttrc.phusiatynski"
 bindsym $mod+w                 exec "firefox -P home"
 bindsym $mod+Shift+w           exec "$HOME/.bin/choose_browser"
 bindsym $mod+c                 exec "gcolor2"
-bindsym $mod+t                 exec "xterm -class twtxtsh -T twtxtsh -g '120x4+100+400' -fs 20 -e twtxtsh"
-bindsym $mod+a                 exec "xterm -class amfora -T amfora -fs 18 -e amfora"
-bindsym $mod+b                 exec "xterm -class newsboat -T newsboat -fs 18 -e newsboat"
+bindsym $mod+b                 exec "alacritty --class newsboat --title newsboat -e newsboat"
 bindsym $mod+Shift+b           exec "$HOME/.bin/clipboard-url-boookmark"
-
 
 bindsym $mod+F5                exec --no-startup-id "sudo zzz"
 bindsym $mod+F6                exec --no-startup-id "i3lock -c 000000 -i /home/piotr/.lockscreen.png"
+bindsym Print                  exec --no-startup-id "/home/piotr/.bin/screenshot"
 bindsym $mod+Print             exec --no-startup-id "i3lock -c 000000 -i /home/piotr/.lockscreen.png"
 
 bindsym $mod+F8                exec --no-startup-id "$HOME/.bin/screenswitch"
 bindsym $mod+F9                exec --no-startup-id "$HOME/.bin/setup_screen"
-bindsym $mod+s                 exec --no-startup-id "xterm -e pulsemixer"
+bindsym $mod+s                 exec --no-startup-id "alacritty -e pulsemixer"
 
 bindsym $mod+F11               exec --no-startup-id "echo 'for i in 0 1 2 3 4; do pactl set-sink-volume $i -7%; done' | /bin/sh && pkill -USR1 i3status"
 bindsym $mod+F12               exec --no-startup-id "echo 'for i in 0 1 2 3 4; do pactl set-sink-volume $i +7%; done' | /bin/sh && pkill -USR1 i3status"
@@ -182,8 +170,6 @@ bindsym $mod+p                 exec --no-startup-id "$HOME/.bin/loadpass"
 
 bindsym $mod+x move workspace to output up
 
-for_window [class="ncmpc"] floating enable
 for_window [class="mpv"] floating enable
 for_window [class="Telegram"] floating enable
 for_window [class="gimp"] floating enable
-for_window [class="twtxtsh"] floating enable

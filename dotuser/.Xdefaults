@@ -2,14 +2,15 @@ Xft.antialias:   1
 Xft.hinting:     1
 Xft.hintstyle:   hintfull
 Xft.rgba:        rgb
+!Xft.dpi: 192
 
 Xcursor.theme: Openzone Black Slim
-Xcursor.size:  12
+Xcursor.size:  18
 
 *cursorBlink:    false
 *scrollBar:      false
 *faceName:       Terminus
-*faceSize:	 12
+*faceSize:	 16
 *background:     #000000
 *foreground:     #ffffff
 *cursorColor:    #07A5FF

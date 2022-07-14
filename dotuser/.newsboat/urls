@@ -14,9 +14,7 @@ https://commandcenter.blogspot.com/feeds/posts/default?alt=rss
 https://research.swtch.com/feed.atom
 https://crawshaw.io/atom.xml
 https://www.beej.us/blog/rss.xml
-https://250bpm.com/rss.xml
 https://apenwarr.ca/log/rss.php
-https://danluu.com/atom.xml
 https://blog.codinghorror.com/rss/
 https://magazyn.bialykruk.org/magazyn/feed/
 https://satran.in/feed.xml
@@ -35,3 +33,5 @@ https://husio.github.io/blog/index.xml "~Husio blog"
 #https://peppe.rs/index.xml
 #https://nullprogram.com/feed/
 #https://adnano.co/atom.xml
+#https://250bpm.com/rss.xml
+#https://danluu.com/atom.xml
