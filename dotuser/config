@@ -13,6 +13,7 @@ $HOME/.Xdefaults
 $HOME/.config/i3/config
 $HOME/.config/i3status/config
 $HOME/.config/fontconfig/fonts.conf
+$HOME/.config/alacritty/alacritty.yml
 $HOME/.gitconfig
 $HOME/.pythonrc
 $HOME/.tmux.conf
