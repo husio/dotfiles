@@ -1,2 +1,3 @@
 #!/bin/sh
-gopass ls --flat | dmenu | xargs --no-run-if-empty gopass show -o | xdotool type --clearmodifiers --file -
+#gopass ls --flat | dmenu | xargs --no-run-if-empty gopass show -o | xdotool type --clearmodifiers --file -
+gopass ls --flat | rofi -dmenu | xargs --no-run-if-empty gopass show -o | xdotool type --clearmodifiers --file -

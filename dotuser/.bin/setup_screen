@@ -15,7 +15,8 @@ else
   modes="laptop only"
 fi
 
-choice=$(echo "$modes" | dmenu -p display)
+#choice=$(echo "$modes" | dmenu -fn 'Hack:pixelsize=42' -p display)
+choice=$(echo "$modes" | rofi -show -p display -dmenu -l 3)
 
 case $choice in
 "laptop only")

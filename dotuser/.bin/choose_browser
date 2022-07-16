@@ -2,11 +2,12 @@
 exec $(
 
   echo "chromium --incognito https://google.com
+netsurf
 firefox -p google --no-remote  https://gmail.com
 firefox -p googlemeet --no-remote  https://meet.google.com
 firefox -p confio --no-remote  https://outlook.office.com/mail
 firefox -p netflix --no-remote  https://netflix.com
 ps aux | grep firefox | awk '{print $2 }' | xargs kill -9
-" | dmenu -fn 'Hack:pixelsize=32'
+" | rofi -dmenu
 
 )
