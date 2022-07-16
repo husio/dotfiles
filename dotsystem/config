@@ -1,5 +1,3 @@
-/etc/udev/rules.d/90-thinkpad-keyboard.rules
 /etc/udev/rules.d/80-power_supply.rules
 
 /usr/local/bin/backlight
-/usr/local/bin/fnlock
