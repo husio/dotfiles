@@ -1,3 +1,4 @@
 /etc/udev/rules.d/80-power_supply.rules
 
 /usr/local/bin/backlight
+/etc/modprobe.d/hid_apple.conf
