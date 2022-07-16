@@ -14,6 +14,8 @@ $HOME/.config/i3/config
 $HOME/.config/i3status/config
 $HOME/.config/fontconfig/fonts.conf
 $HOME/.config/alacritty/alacritty.yml
+$HOME/.config/rofi/config.rasi
+$HOME/.config/rofi/minimal.rasi
 $HOME/.gitconfig
 $HOME/.pythonrc
 $HOME/.tmux.conf
