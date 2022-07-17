@@ -1,5 +1,6 @@
 $HOME/.bin/choose_browser
 $HOME/.bin/loadpass
+$HOME/.bin/loadpass_with_login
 $HOME/.bin/playclipboard
 $HOME/.bin/playtwitch
 $HOME/.bin/renderhtml

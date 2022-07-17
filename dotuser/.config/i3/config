@@ -168,6 +168,7 @@ bindsym $mod+comma             exec --no-startup-id "mpc prev"
 bindsym XF86Display            exec --no-startup-id "sh /home/piotr/.bin/setup_screen"
 bindsym $mod+Shift+Delete      exec "sudo /usr/bin/poweroff"
 bindsym $mod+p                 exec --no-startup-id "$HOME/.bin/loadpass"
+bindsym $mod+Shift+p           exec --no-startup-id "$HOME/.bin/loadpass_with_login"
 
 bindsym $mod+x move workspace to output up
 

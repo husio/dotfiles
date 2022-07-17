@@ -1,0 +1,6 @@
+#!/bin/sh
+
+creds=$(gopass ls --flat | rofi -dmenu)
+echo "$creds" | cut -d / -f 2 | xdotool type --clearmodifiers --file -
+xdotool key Tab
+echo "$creds" | xargs --no-run-if-empty gopass show -o | xdotool type --clearmodifiers --file -
