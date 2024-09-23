@@ -1,4 +1,0 @@
-text/html;              firefox -p mutt --no-remote %s &; test=test -n "$DISPLAY"; needsterminal
-text/html;		w3m -I %{charset} -T text/html; nametemplate=%s.html; copiousoutput
-application/pdf; 	epdfview %s
-image/*; 		viewnior %s

@@ -13,4 +13,4 @@ gtk-icon-theme-name = "Faenza"
 
 gtk-font-name = "Terminus 8"
 
-include "/home/piotrek/.gtkrc.mine"
+include "/home/piotrek3/.gtkrc.mine"

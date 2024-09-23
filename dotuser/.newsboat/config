@@ -1,6 +1,0 @@
-auto-reload yes
-reload-threads 15
-#browser "firefox -p home %u"
-browser "netsurf %u"
-datetime-format "%d.%m.%Y"
-articlelist-format "%D  %?T?|%-17T| ?%t"

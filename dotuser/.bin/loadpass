@@ -1,3 +1,10 @@
 #!/bin/sh
-#gopass ls --flat | dmenu | xargs --no-run-if-empty gopass show -o | xdotool type --clearmodifiers --file -
-gopass ls --flat | rofi -dmenu | xargs --no-run-if-empty gopass show -o | xdotool type --clearmodifiers --file -
+
+creds=$(gopass ls --flat | wofi -d)
+
+if [ "$1" = "withlogin" ]; then
+  echo "$creds" | cut -d / -f 2 | xargs echo -n | wtype -d 10 -
+  wtype -P tab
+fi
+
+echo "$creds" | xargs --no-run-if-empty gopass show -o | wtype -d 10 -

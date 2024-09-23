@@ -1,45 +1,41 @@
-bindkey -v
+export XDG_RUNTIME_DIR=/tmp/xdg_runtime.$UID
+mkdir -p $XDG_RUNTIME_DIR
+export XDG_SESSION_TYPE=wayland
+export XDG_CURRENT_DESKTOP=sway
+export QT_QPA_PLATFORM=wayland-egl
+export ELM_DISPLAY=wl
+export SDL_VIDEODRIVER=wayland
 
-export PATH=$HOME/.bin:$HOME/.cargo/bin:$PATH
+export PATH=$HOME/.bin:$PATH
 
 export HISTSIZE=5000
 export SAVEHIST=5000
 export PAGER=less
 export GOBIN=$HOME/.bin
 export GPG_TTY=$(tty)
-export BROWSER=icecat
-
-#export GDK_SCALE=2
-#export GDK_DPI_SCALE=0.5
-export QT_AUTO_SCREEN_SET_FACTOR=0
-export QT_SCALE_FACTOR=2
-export QT_FONT_DPI=96
+export PAGER=nvimpager
 
 prompt off
 
-alias vim=vim-huge
-alias tmux="tmux -2"
-
-alias grep="grep --color=auto"
-
+precmd() {
+    print -Pn "\e]133;A\e\\"
+}
 
 
-if [ -n "$VIRTUAL_ENV" ]; then
-    . "$VIRTUAL_ENV/bin/activate"
-fi
-
-if [ -n "$TMUX" ]; then
-    export TERM=screen-256color
-else
-    export TERM=xterm-256color
-fi
-
-if [[ -z $DISPLAY ]] && [[ $(tty) = /dev/tty1 ]]; then
-    exec startx
-    exit
-fi
+bindkey -v
 
 
-if [ $commands[kubectl] ]; then
-	source <(kubectl completion zsh)
+if [ "$(tty)" = "/dev/tty1" ]
+then
+	clear
+
+	if [ ! -f $HOME/.config/mpd/pid ]; then
+		mpd
+	elif ! ps -p $( cat $HOME/.config/mpd/pid ) > /dev/null; then
+		mpd
+	fi
+
+
+	dbus-run-session sway &> /tmp/sway.log
+	exit
 fi
