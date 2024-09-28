@@ -2,6 +2,7 @@ $HOME/.bin/loadpass
 $HOME/.bin/loadpass_with_login
 $HOME/.bin/addtags
 $HOME/.bin/up
+$HOME/.bin/sway_bar.sh
 
 $HOME/.config/sway/config
 $HOME/.config/mako/config
