@@ -6,6 +6,8 @@ $HOME/.bin/up
 $HOME/.config/sway/config
 $HOME/.config/mako/config
 $HOME/.config/wofi/style.css
+$HOME/.config/foot/foot.ini
+$HOME/.config/gtk-3.0/settings.ini
 $HOME/.gitconfig
 $HOME/.tmux.conf
 $HOME/.wallpaper.png
