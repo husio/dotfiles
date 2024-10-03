@@ -1,0 +1,10 @@
+#!/bin/bash
+
+set -ox
+
+yt-dlp \
+  --extract-audio \
+  --audio-format mp3 \
+  --trim-filenames 24 \
+  --output "%(title)s.mp3" \
+  "$1"

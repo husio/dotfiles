@@ -1,0 +1,7 @@
+#!/bin/sh
+
+device='50:C2:ED:6A:7B:1A'
+
+bluetoothctl trust "$device"
+bluetoothctl disconnect "$device"
+bluetoothctl connect "$device"
