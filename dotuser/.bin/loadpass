@@ -1,10 +1,77 @@
 #!/bin/sh
 
-creds=$(gopass ls --flat | wofi -d)
+out_username='false'
+out_password='false'
+interactive='false'
 
-if [ "$1" = "withlogin" ]; then
-  echo "$creds" | cut -d / -f 2 | xargs echo -n | wtype -d 10 -
-  wtype -P tab
+
+print_usage() {
+	echo "$0 [-i] [-u] [-p]"
+	echo " -i  type the username"
+	echo " -u  type the username"
+	echo " -p  type the password"
+}
+
+while getopts 'upi' flag; do
+	case "${flag}" in
+		i) interactive='true' ;;
+		u) out_username='true' ;;
+		p) out_password='true' ;;
+		*) print_usage
+			exit 1 ;;
+	esac
+done
+
+if [ "$out_username" = "false" ] && [ "$out_password" = "false" ] && [ $interactive = 'false' ]
+then
+	exit 0
 fi
 
-echo "$creds" | xargs --no-run-if-empty gopass show -o | wtype -d 10 -
+if [ $interactive = 'true' ]
+then
+	mode=$( echo "only username\nonly password\nusername and password" | wofi -d )
+	case "$mode" in
+		"only username")
+			out_username='true'
+			out_password='false'
+			;;
+		"only password")
+			out_username='false'
+			out_password='true'
+			;;
+		"username and password")
+			out_username='true'
+			out_password='true'
+			;;
+		*)
+			echo "Unknown mode: $mode"
+			exit 1
+			;;
+	esac
+fi
+
+
+creds=$(find $HOME/.password-store -name '*.gpg' -type f -execdir basename {} .gpg ';'| wofi -d)
+
+if [ -z "${creds}" ]; then
+	exit 0
+fi
+
+input_secret() {
+  pass show "$creds" | grep "$1:" | cut -d ':' -f 2- | xargs echo -n | wtype -s 25 -d 7 -
+}
+
+if [ "$out_username" = "true" ]
+then
+	input_secret "login"
+fi
+
+if [ "$out_username" = "true" ] && [ "$out_password" = "true" ]
+then
+	wtype -s 100 -P tab
+fi
+
+if [ "$out_password" = "true" ]
+then
+	input_secret "password"
+fi

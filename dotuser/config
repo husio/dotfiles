@@ -1,9 +1,7 @@
 $HOME/.bin/addtags
 $HOME/.bin/loadpass
-$HOME/.bin/loadpass_with_login
 $HOME/.bin/setup_headphone
 $HOME/.bin/setup_keyboard
-$HOME/.bin/sway_bar.sh
 $HOME/.bin/sway_bar.sh
 $HOME/.bin/terminal-colors
 $HOME/.bin/up

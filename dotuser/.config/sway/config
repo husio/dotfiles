@@ -149,7 +149,7 @@ output * bg #000000 solid_color
     # Switch the current container between different layout styles
     #bindsym $mod+s layout stacking
     #bindsym $mod+w layout tabbed
-    bindsym $mod+e layout toggle split
+    #bindsym $mod+e layout toggle split
 
     # Make the current focus fullscreen
     bindsym $mod+f fullscreen
@@ -228,9 +228,10 @@ for_window {
 }
 
 bindsym $mod+w                         exec /usr/bin/firefox-wayland
+bindsym $mod+e                         exec /usr/bin/thunderbird
 bindsym $mod+s                         exec $term pulsemixer
-bindsym $mod+p                         exec loadpass
-bindsym $mod+Shift+p                   exec loadpass withlogin
+bindsym $mod+p                         exec loadpass -i
+bindsym $mod+Shift+p                   exec loadpass -up
 bindsym $mod+Shift+x                   move workspace to output left
 bindsym --locked XF86AudioMute         exec pactl set-sink-mute @DEFAULT_SINK@ toggle
 bindsym XF86AudioRaiseVolume           exec pactl set-sink-volume @DEFAULT_SINK@ +5%
