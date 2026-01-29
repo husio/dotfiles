@@ -21,6 +21,8 @@ set $term foot
 #set $menu dmenu_path | dmenu | xargs swaymsg exec --
 set $menu wofi --show run
 
+set $home /home/piotr
+
 ### Output configuration
 #
 # Default wallpaper (more resolutions are available in /usr/share/backgrounds/sway/)
@@ -84,8 +86,6 @@ output * bg #000000 solid_color
     # Reload the configuration file
     bindsym $mod+Shift+c reload
 
-    # Exit sway (logs you out of your Wayland session)
-    bindsym $mod+Shift+e exec swaynag -t warning -m 'You pressed the exit shortcut. Do you really want to exit sway? This will end your Wayland session.' -B 'Yes, exit sway' 'swaymsg exit'
 #
 # Moving around:
 #
@@ -206,10 +206,7 @@ bindsym $mod+r mode "resize"
 bar {
     position top
     mode hide
-    font Hack 28
-
-    # When the status_command prints a new line to stdout, swaybar updates.
-    # The default just shows the current date and time.
+    font Hack 16
     status_command while ~/.bin/sway_bar.sh; do sleep 2; done
 
     colors {
@@ -228,6 +225,7 @@ for_window {
 }
 
 bindsym $mod+w                         exec /usr/bin/firefox-wayland
+bindsym $mod+Shift+w                   exec /usr/bin/firefox-wayland -P linkedin
 bindsym $mod+e                         exec /usr/bin/thunderbird
 bindsym $mod+s                         exec $term pulsemixer
 bindsym $mod+p                         exec loadpass -i
@@ -263,15 +261,23 @@ exec mako
 exec pipewire
 exec pipewire-pulse
 exec wireplumber
-exec telegram-desktop -startintray
+exec Telegram -startintray
 exec mpris-proxy
 #exec blueman-applet
 
-# Clamshell mode or lock & sleep
-# This is a if/else statement: [ outputs_count == 1 ] && true || false
-set $laptop_screen 'eDP-1'
-#bindswitch --reload --locked lid:on exec '[ $(swaymsg -t get_outputs | grep name | wc -l) == 1 ] || swaymsg output $laptop_screen disable'
-#bindswitch --reload --locked lid:off output $laptop_screen enable
+output eDP-1 {
+    pos 0 0
+    res 1920x1080
+    scale 1.25
+}
 
-#output eDP-1 pos 1920 0 res 1920x1080
-#output DP-2 pos 0 0 res 1920x1080
+output "LG Electronics LG HDR 4K 0x00073A23" {
+    pos 1536 0
+    res 3840x2160
+    scale 1.5
+}
+
+### Clamshell Mode
+# Disables eDP-1 when the lid is closed, re-enables it when opened
+bindswitch --locked lid:on output eDP-1 disable
+bindswitch --locked lid:off output eDP-1 enable

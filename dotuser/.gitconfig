@@ -19,3 +19,5 @@
 	#helper = /usr/lib/git-core/git-credential-gnome-keyring
 [gpg]
 	program = gpg2
+[push]
+	autoSetupRemote = true

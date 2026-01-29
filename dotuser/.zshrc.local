@@ -14,6 +14,7 @@ export PAGER=less
 export GOBIN=$HOME/.bin
 export GPG_TTY=$(tty)
 export PAGER=nvimpager
+export AVANTE_GEMINI_API_KEY=AIzaSyDfJrKPo0b5kGJe2wPjSK0b11xTs2jGuFw
 
 prompt off
 
@@ -23,6 +24,11 @@ precmd() {
 
 
 bindkey -v
+
+
+source <(fzf --zsh)
+
+eval $(opam env --switch=default)
 
 
 if [ "$(tty)" = "/dev/tty1" ]
