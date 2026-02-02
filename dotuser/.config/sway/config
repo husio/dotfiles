@@ -281,3 +281,5 @@ output "LG Electronics LG HDR 4K 0x00073A23" {
 # Disables eDP-1 when the lid is closed, re-enables it when opened
 bindswitch --locked lid:on output eDP-1 disable
 bindswitch --locked lid:off output eDP-1 enable
+
+seat * xcursor_theme Adwaita 18
